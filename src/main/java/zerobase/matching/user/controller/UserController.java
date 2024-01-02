@@ -1,0 +1,48 @@
+package zerobase.matching.user.controller;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import zerobase.matching.user.dto.SignUp;
+import zerobase.matching.user.service.UserService;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/users")
+public class UserController {
+
+  private final UserService userService;
+
+  /**회원 가입 요청*/
+  @PostMapping("/signup")
+  public ResponseEntity<SignUp.Response> signup(@RequestBody @Valid SignUp.Request request){
+    SignUp.Response result = this.userService.register(request);
+    return ResponseEntity.ok().body(result);
+  }
+
+  /**로그인 요청 - access token을 리턴한다.*/
+//  @PostMapping("/signin")
+//  public ResponseEntity<String> singin(@RequestBody @Valid SignIn request) {
+//    String token = this.userService.login(request);
+//    return ResponseEntity.ok().body(token);
+//  }
+
+  /** 회원 탈퇴 */
+//  @DeleteMapping
+//  public ResponseEntity<String> deleteUser(@RequestBody @Valid RemoveUser request) {
+//    this.userService.removeUser(request);
+//    return ResponseEntity.ok().body("회원 탈퇴가 완료되었습니다.");
+//  }
+
+  /** 로그 아웃 */
+
+  /** 회원 정보 변경 */
+}
