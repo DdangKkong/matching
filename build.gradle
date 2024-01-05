@@ -25,9 +25,13 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // @Valid 사용 위해
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final' // @Mapper 사용 위해
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final' // @Mapper 사용 위해
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 tasks.named('bootBuildImage') {
