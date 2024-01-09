@@ -5,13 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import zerobase.matching.chat.entity.ChatRoom;
-import zerobase.matching.chat.entity.User;
-import zerobase.matching.chat.entity.UserChatRoom;
 import zerobase.matching.chat.entity.dto.ChatRoomDto;
 import zerobase.matching.chat.service.ChatRoomService;
+import zerobase.matching.user.persist.entity.UserEntity;
+import zerobase.matching.user.service.UserService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -20,12 +19,13 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
+    private final UserService userService;
 
     @PostMapping("/create/{userId}")
     public ResponseEntity<Void> createChatRoom(
             @PathVariable("userId") Long userId, @RequestParam String name){
 
-        User user = new User(userId);
+        UserEntity user = userService.findUser(userId);
 
         chatRoomService.createChatRoom(user, name);
 
@@ -55,8 +55,7 @@ public class ChatRoomController {
                                               @PathVariable Long userId){
 
         ChatRoom chatRoom = chatRoomService.findChatRoom(chatRoomId);
-        User user = new User(userId);
-
+        UserEntity user = userService.findUser(userId);
         chatRoomService.enterChatRoom(chatRoom, user);
 
         return ResponseEntity.status(OK).build();

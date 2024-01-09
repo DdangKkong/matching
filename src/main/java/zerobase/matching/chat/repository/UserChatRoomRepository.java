@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import zerobase.matching.chat.entity.User;
 import zerobase.matching.chat.entity.UserChatRoom;
 
 import java.util.List;

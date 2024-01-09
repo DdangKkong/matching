@@ -2,6 +2,7 @@ package zerobase.matching.chat.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import zerobase.matching.user.persist.entity.UserEntity;
 
 @Entity
 @Getter
@@ -20,7 +21,7 @@ public class UserChatRoom {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     // User import 해야함
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")

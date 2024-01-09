@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import zerobase.matching.chat.entity.dto.ChatDto;
 import zerobase.matching.chat.entity.type.ChatType;
+import zerobase.matching.user.persist.entity.UserEntity;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class Chat {
     // User import 해야됨
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")

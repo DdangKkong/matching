@@ -23,7 +23,7 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
         // 내장 브로커 사용
         // 해당 prefix가 붙은 경로일 때, 메세지를 브로커에서 바로 처리
         // queue는 1:1 , topic은 1:N
-        registry.enableSimpleBroker("/queue", "topic");
+        registry.enableSimpleBroker("/queue", "/topic");
 
         // 해당 prefix가 붙은 경로일 때, 메세지 핸들러로 전달
         registry.setApplicationDestinationPrefixes("/app");
