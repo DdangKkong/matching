@@ -1,12 +1,10 @@
 package zerobase.matching.project.dto;
 
 import jakarta.validation.constraints.NotNull;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-import zerobase.matching.project.domain.ProjectOnOffline;
 
 public class DeleteProject {
 
@@ -14,18 +12,19 @@ public class DeleteProject {
   public static class Request {
 
     @NotNull
-    private BigInteger userId;
+    private long userId;
 
   }
 
   @Builder
+  @Getter
   public static class Response {
 
-    private BigInteger projectId;
-    private BigInteger userId;
+    private long projectId;
+    private long userId;
     private String title;
     private String content;
-    private ProjectOnOffline projectOnOffline;
+    private String projectOnOffline;
     private String place;
     private int numberOfRecruit;
     private LocalDateTime createTime;
@@ -38,7 +37,8 @@ public class DeleteProject {
           .userId(projectDto.getUserId())
           .title(projectDto.getTitle())
           .content(projectDto.getContent())
-          .projectOnOffline(projectDto.getProjectOnOffline())
+          .projectOnOffline(projectDto.getProjectOnOffline().toString())
+          .place(projectDto.getPlace())
           .numberOfRecruit(projectDto.getNumberOfRecruit())
           .createTime(projectDto.getCreateTime())
           .updateTime(projectDto.getUpdateTime())

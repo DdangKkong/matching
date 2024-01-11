@@ -8,13 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import zerobase.matching.user.persist.entity.UserEntity;
 
 @Getter // Dto 에서 builder.get~~ 하기 위해
 @Setter // 구인 글 수정할때 project.set~~ 하기 위해
@@ -28,7 +28,7 @@ public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private BigInteger commentId;
+  private long commentId;
 
   // 내용
   @Column(name = "content")
@@ -48,7 +48,7 @@ public class Comment {
 
   // 부모 댓글 고유번호
   @Column(name = "parent_id")
-  private BigInteger parentId;
+  private long parentId;
 
   // 계층
   @Column(name = "level")
@@ -56,7 +56,7 @@ public class Comment {
 
   @ManyToOne
   @JoinColumn(name = "user_id")
-  private User user;
+  private UserEntity user;
 
   @ManyToOne
   @JoinColumn(name = "project_id")

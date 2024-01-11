@@ -1,23 +1,22 @@
 package zerobase.matching.project.controller;
 
 import jakarta.validation.Valid;
-import java.math.BigInteger;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zerobase.matching.project.dto.CreateProject;
 import zerobase.matching.project.dto.DeleteProject;
-//import zerobase.matching.dto.PageInfo;
+import zerobase.matching.project.dto.paging.ProjectPagingResponse;
 import zerobase.matching.project.dto.ReadProject;
-//import zerobase.matching.dto.ResponseDto;
 import zerobase.matching.project.dto.UpdateProject;
-//import zerobase.matching.mapper.ProjectMapper;
 import zerobase.matching.project.service.ProjectService;
 
 @RestController
@@ -26,68 +25,65 @@ import zerobase.matching.project.service.ProjectService;
 public class ProjectController {
 
   private final ProjectService projectService;
-//  private final ProjectMapper mapper;
 
   // 프로젝트 구인 글 작성
   @PostMapping("/projects")
-  public CreateProject.Response createProject(
+  public ResponseEntity<CreateProject.Response> createProject(
       @RequestBody @Valid CreateProject.Request request
-//      ,Authentication authentication
   ){
-    return CreateProject.Response.fromEntity(
+    CreateProject.Response response = CreateProject.Response.fromEntity(
         projectService.createProject(
             request.getUserId(), request.getTitle(), request.getContent(),
             request.getProjectOnOffline(), request.getPlace(),
             request.getNumberOfRecruit(), request.getDueDate()
         )
     );
+    return ResponseEntity.ok(response);
   }
 
   // 프로젝트 구인 글 읽기
-  @GetMapping("/projects/{projectId}")
-  public ReadProject.Response readProject(@PathVariable BigInteger projectId){
-    return ReadProject.Response.fromEntity(
+  @GetMapping("/projects")
+  public ResponseEntity<ReadProject.Response> readProject(
+      @RequestParam(value = "projectId") long projectId){
+    ReadProject.Response response = ReadProject.Response.fromEntity(
         projectService.readProject(projectId)
     );
+    return ResponseEntity.ok(response);
   }
 
   // 프로젝트 구인 글 수정
   @PutMapping("/projects")
-  public UpdateProject.Response updateProject(
+  public ResponseEntity<UpdateProject.Response> updateProject(
       @RequestBody @Valid UpdateProject.Request request
-//      ,Authentication authentication
   ){
-    return UpdateProject.Response.fromEntity(
+    UpdateProject.Response response = UpdateProject.Response.fromEntity(
         projectService.updateProject(
             request.getUserId(), request.getProjectId(), request.getTitle(),
             request.getContent(), request.getProjectOnOffline(), request.getPlace(),
             request.getNumberOfRecruit(), request.getDueDate()
         )
     );
+    return ResponseEntity.ok(response);
   }
 
   // 프로젝트 구인 글 삭제
-  @DeleteMapping("/projects/{projectId}")
-  public DeleteProject.Response deleteProject(@PathVariable BigInteger projectId,
+  @DeleteMapping("/projects")
+  public ResponseEntity<DeleteProject.Response> deleteProject(@RequestParam long projectId,
     @RequestBody @Valid DeleteProject.Request request){
-    return DeleteProject.Response.fromEntity(
+    DeleteProject.Response response = DeleteProject.Response.fromEntity(
         projectService.deleteProject(request.getUserId(), projectId)
     );
+    return ResponseEntity.ok(response);
   }
 
-  // 프로젝트 모든 구인 글 조회 ( 메인 화면, 구인 신청 가능한 글만, page 요소 추가 ) - 추후 구현 예정
-//  @GetMapping
-//  public ResponseEntity getArticles(@RequestParam(value = "page", required = false, defaultValue = "1") @Positive int page,
-//      @RequestParam("size") @Positive int size) {
-//
-//    Page<Project> projectPage = projectService.findProjects(page, size);
-//    List<Project> projects = projectPage.getContent();
-//    List<ProjectResponseDto> projectResponseDtos = mapper.projectsToProjectResponseDtos(projects);
-//    PageInfo pageInfo = new PageInfo(projectPage.getNumber() + 1, projectPage.getSize(),
-//        projectPage.getTotalPages());
-//
-//    return new ResponseEntity(new ResponseDto<>(projectResponseDtos, pageInfo), HttpStatus.OK);
-//  }
+  // 프로젝트 모든 구인 글 조회 ( 메인 화면, page 요소 추가 )
+  @GetMapping("/projects/list")
+  public ProjectPagingResponse pagingProjects(
+      @RequestParam(value = "page", required = false, defaultValue = "1") @Positive int page,
+      @RequestParam("size") @Positive int size) {
+
+    return projectService.pagingProjects(page, size);
+  }
 
 
 }

@@ -1,5 +1,8 @@
 package zerobase.matching.project.domain;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public enum ProjectOnOffline {
-  ONLINE, OFFLINE, BOTH, deleted
+  online, offline, both, deleted;
 }

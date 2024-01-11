@@ -1,13 +1,11 @@
 package zerobase.matching.project.dto;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import zerobase.matching.project.domain.ProjectOnOffline;
 import zerobase.matching.project.domain.Project;
 
 @Getter
@@ -16,10 +14,10 @@ import zerobase.matching.project.domain.Project;
 @AllArgsConstructor
 public class ProjectDto {
   // 구인 글 id
-  private BigInteger projectId;
+  private long projectId;
 
   // 회원 id
-  private BigInteger userId;
+  private long userId;
 
   // 제목
   private String title;
@@ -28,7 +26,7 @@ public class ProjectDto {
   private String content;
 
   // 모임 형태
-  private ProjectOnOffline projectOnOffline;
+  private String projectOnOffline;
 
   // 모임 장소
   private String place;
@@ -54,7 +52,7 @@ public class ProjectDto {
         .userId(projects.getUser().getUserId())
         .title(projects.getTitle())
         .content(projects.getContent())
-        .projectOnOffline(projects.getProjectOnOffline())
+        .projectOnOffline(projects.getProjectOnOffline().toString())
         .place(projects.getPlace())
         .numberOfRecruit(projects.getNumberOfRecruit())
         .currentRecruit(projects.getCurrentRecruit())

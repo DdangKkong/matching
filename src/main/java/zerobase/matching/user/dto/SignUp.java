@@ -109,7 +109,7 @@ public class SignUp {
   @AllArgsConstructor
   @Builder
   public static class Response{
-    private BigInteger userId;
+    private long userId;
     private Timestamp registerTime;
     private String userLoginId;
     private String nickname;
