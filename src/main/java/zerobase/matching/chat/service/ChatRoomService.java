@@ -1,6 +1,7 @@
 package zerobase.matching.chat.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zerobase.matching.chat.entity.ChatRoom;
 import zerobase.matching.chat.entity.UserChatRoom;
@@ -8,23 +9,38 @@ import zerobase.matching.chat.repository.ChatRoomRepository;
 import zerobase.matching.chat.repository.UserChatRoomRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ChatRoomService {
 
-    private final ChatRoomRepository chatRoomRepository;
-    private final UserChatRoomRepository userChatRoomRepository;
+private final ChatRoomRepository chatRoomRepository;
+private final UserChatRoomRepository userChatRoomRepository;
 
-    public void createChatRoom(UserEntity user, String name){
+    @Autowired
+    public ChatRoomService(ChatRoomRepository chatRoomRepository, UserChatRoomRepository userChatRoomRepository) {
+        this.chatRoomRepository = chatRoomRepository;
+        this.userChatRoomRepository = userChatRoomRepository;
+    }
+
+    public ChatRoom createChatRoom(UserEntity user, String name){
         // 채팅방을 만든다.
 
         // 채팅방 인스턴스 생성
         ChatRoom chatRoom = ChatRoom.builder()
+                .chatRoomCreateDate(Timestamp.valueOf(LocalDateTime.now()))
                 .title(name)
                 .build();
+
+        // chatRoom 저장
+        return chatRoomRepository.save(chatRoom);
+    }
+
+    public void createUserChatRoom(ChatRoom chatRoom, UserEntity user, String name){
+
 
         // 해당 user의 userChatRoom 생성
         UserChatRoom userChatRoom = UserChatRoom.builder()
@@ -34,9 +50,9 @@ public class ChatRoomService {
 
         // userChatroom 저장
         userChatRoomRepository.save(userChatRoom);
-        // chatRoom 저장
-        chatRoomRepository.save(chatRoom);
     }
+
+
 
     public List<UserChatRoom> findAllByUserId(Long userId){
         // 해당 user의 UserChatRoom 찾기
@@ -46,8 +62,22 @@ public class ChatRoomService {
     public ChatRoom findChatRoom(Long chatRoomId){
         // 채팅방 찾아주는 기능
         return chatRoomRepository.findByChatroomId(chatRoomId).orElseThrow(
-                () -> new RuntimeException("ChatRoom doesn't exist"));
+                () -> new RuntimeException("ChatRoom doesn't exist")
+        );
 
+    }
+
+//    public UserChatRoom findUserChatRoom(Long userChatRoomId){
+//
+//        return userChatRoomRepository.findByUserChatRoomId(userChatRoomId).orElseThrow(
+//                () -> new RuntimeException("UserChatRoom doesn't exist")
+//        );
+//    }
+
+    public UserChatRoom findUserChatRoom(Long chatRoomId, Long userId){
+        return userChatRoomRepository.findByUserIdAndChatRoomId(userId, chatRoomId).orElseThrow(
+                ()->new RuntimeException("UserChatRoom doesn't exist")
+        );
     }
     public void enterChatRoom(ChatRoom chatRoom, UserEntity user){
         Optional<UserChatRoom> userChatRoomOptional =

@@ -21,11 +21,11 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
 
         // 내장 브로커 사용
-        // 해당 prefix가 붙은 경로일 때, 메세지를 브로커에서 바로 처리
-        // queue는 1:1 , topic은 1:N
-        registry.enableSimpleBroker("/queue", "/topic");
+        // queue(sub)는 1:1 , topic은 1:N  채팅방에 구독을 한다는 생각
+        registry.enableSimpleBroker("/sub", "/topic");
 
-        // 해당 prefix가 붙은 경로일 때, 메세지 핸들러로 전달
-        registry.setApplicationDestinationPrefixes("/app");
+        // 해당 prefix가 붙은 경로일 때, 메세지 핸들러로 전달, pub
+        // 채팅방 구독한 인원들에게 메세지 전달
+        registry.setApplicationDestinationPrefixes("/pub");
     }
 }

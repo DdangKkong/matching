@@ -134,7 +134,7 @@ public class UserService {
   }
 
   public UserEntity findUser(Long userId){
-    return userRepository.findByUserId(String.valueOf(userId)).orElseThrow(
+    return userRepository.findByUserId(userId).orElseThrow(
             ()-> new RuntimeException("NoUser")
     );
   }

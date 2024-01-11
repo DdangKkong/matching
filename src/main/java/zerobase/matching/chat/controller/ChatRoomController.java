@@ -1,11 +1,11 @@
 package zerobase.matching.chat.controller;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import zerobase.matching.chat.entity.ChatRoom;
-import zerobase.matching.chat.entity.dto.ChatRoomDto;
+import zerobase.matching.chat.dto.ChatRoomDto;
 import zerobase.matching.chat.service.ChatRoomService;
 import zerobase.matching.user.persist.entity.UserEntity;
 import zerobase.matching.user.service.UserService;
@@ -16,10 +16,16 @@ import static org.springframework.http.HttpStatus.*;
 
 @Controller
 @RequestMapping("/chat") // 공통부분은 requestMapping을 한다.
-@RequiredArgsConstructor
 public class ChatRoomController {
+
     private final ChatRoomService chatRoomService;
     private final UserService userService;
+
+    @Autowired
+    public ChatRoomController(ChatRoomService chatRoomService, UserService userService) {
+        this.chatRoomService = chatRoomService;
+        this.userService = userService;
+    }
 
     @PostMapping("/create/{userId}")
     public ResponseEntity<Void> createChatRoom(
@@ -27,7 +33,8 @@ public class ChatRoomController {
 
         UserEntity user = userService.findUser(userId);
 
-        chatRoomService.createChatRoom(user, name);
+        ChatRoom chatRoom = chatRoomService.createChatRoom(user, name);
+        chatRoomService.createUserChatRoom(chatRoom, user, name);
 
         return ResponseEntity.status(CREATED).build();
     }

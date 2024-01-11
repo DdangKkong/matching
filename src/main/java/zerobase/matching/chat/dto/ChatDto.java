@@ -1,8 +1,7 @@
-package zerobase.matching.chat.entity.dto;
+package zerobase.matching.chat.dto;
 
 import lombok.*;
-import zerobase.matching.chat.entity.Chat;
-import zerobase.matching.chat.entity.type.ChatType;
+import zerobase.matching.chat.type.ChatType;
 
 @Getter
 @Setter
@@ -10,7 +9,6 @@ import zerobase.matching.chat.entity.type.ChatType;
 @AllArgsConstructor
 @Builder
 public class ChatDto {
-
 
     private Long userId;
     private Long chatRoomId;

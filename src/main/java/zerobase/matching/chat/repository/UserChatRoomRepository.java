@@ -8,14 +8,16 @@ import zerobase.matching.chat.entity.UserChatRoom;
 
 import java.util.List;
 import java.util.Optional;
-@Repository
+
 public interface UserChatRoomRepository extends JpaRepository<UserChatRoom, Long> {
     // 쿼리 메서드로 변경해서 만들어서 사용해볼것
-    @Query("select uc from UserChatRoom uc where uc.user.userId = :userId and uc.chatRoom.chatroomId =:chatRoomId")
+    @Query("select uc from USER_CHATROOM uc where uc.user.userId = :userId and uc.chatRoom.chatroomId =:chatRoomId")
     Optional<UserChatRoom> findByUserIdAndChatRoomId(@Param("userId") Long userId,@Param("chatRoomId") Long chatRoomId);
 
-    @Query("select uc from UserChatRoom uc where uc.user.userId = :userId")
+    @Query("select uc from USER_CHATROOM uc where uc.user.userId = :userId")
     List<UserChatRoom> findAllByUserId(@Param("userId") Long userId);
 
     List<UserChatRoom> findAllByChatRoomId(Long chatRoomId);
+
+//    Optional<UserChatRoom> findByUserChatRoomId(Long userChatRoomId);
 }

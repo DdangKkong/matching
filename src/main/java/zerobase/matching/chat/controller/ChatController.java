@@ -5,8 +5,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
 import zerobase.matching.chat.entity.ChatRoom;
-import zerobase.matching.chat.entity.dto.ChatDto;
-import zerobase.matching.chat.entity.type.ChatType;
+import zerobase.matching.chat.entity.UserChatRoom;
+import zerobase.matching.chat.dto.ChatDto;
+import zerobase.matching.chat.type.ChatType;
 import zerobase.matching.chat.service.ChatRoomService;
 import zerobase.matching.chat.service.ChatService;
 import zerobase.matching.user.persist.entity.UserEntity;
@@ -15,6 +16,7 @@ import zerobase.matching.user.service.UserService;
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
+
     private final SimpMessageSendingOperations sendingOperations;
     private final ChatService chatService;
     private final ChatRoomService chatRoomService;
@@ -34,8 +36,9 @@ public class ChatController {
             chatDto.setChatContext(chatDto.getUserId() + "님이 퇴장하였습니다.");
         }
 
+        UserChatRoom userChatRoom = chatRoomService.findUserChatRoom(chatDto.getChatRoomId(),chatDto.getUserId());
         // 채팅 저장
-        chatService.createChat(chatRoom, sender, chatDto);
+        chatService.createChat(userChatRoom, chatRoom, sender, chatDto);
 
         // /chat/message 로 받은 경로에서
         // /topic/chat/room/{chatroomId} 경로로 변경해준다.

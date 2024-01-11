@@ -1,4 +1,4 @@
-package zerobase.matching.chat.entity.dto;
+package zerobase.matching.chat.dto;
 
 import lombok.*;
 import zerobase.matching.chat.entity.ChatRoom;

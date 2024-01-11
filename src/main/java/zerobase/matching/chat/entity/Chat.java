@@ -2,15 +2,12 @@ package zerobase.matching.chat.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import zerobase.matching.chat.entity.dto.ChatDto;
-import zerobase.matching.chat.entity.type.ChatType;
-import zerobase.matching.user.persist.entity.UserEntity;
+import zerobase.matching.chat.type.ChatType;
 
-import java.lang.reflect.Type;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
+@Table(name = "CHAT")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,26 +16,24 @@ import java.util.Date;
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CHAT_ID")
     private Long chatId;
 
     // 채팅 내용
     // Text는 어떤 자료형이어야하는가
+    @Column(name = "CONTENT")
     private String chatContext;
 
     // 채팅 등록 일자
-    @CreatedDate
-    private Date chatCreateDate;
-
-    // User import 해야됨
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @Column(name = "CHAT_AT")
+    private Timestamp chatCreateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatroom_id")
-    private ChatRoom chatRoom;
+    @JoinColumn(name = "USER_CHATROOM_ID")
+    private UserChatRoom userChatRoom;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "CHAT_TYPE")
     private ChatType chatType;
 
 }

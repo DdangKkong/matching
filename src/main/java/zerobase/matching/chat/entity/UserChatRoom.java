@@ -5,6 +5,7 @@ import lombok.*;
 import zerobase.matching.user.persist.entity.UserEntity;
 
 @Entity
+@Table(name = "USER_CHATROOM")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,18 +15,17 @@ public class UserChatRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_CHATROOM_ID")
     private Long userChatRoomId;
 
     // 둘 다 단방향 설계
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    // User import 해야함
+    @JoinColumn(name = "USER_ID")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatroom_id")
+    @JoinColumn(name = "CHATROOM_ID")
     private ChatRoom chatRoom;
-
 
 }

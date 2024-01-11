@@ -1,28 +1,28 @@
 package zerobase.matching.chat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
+@Table(name = "CHATROOM")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ChatRoom {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ROOM_ID")
     private Long chatroomId;
 
+    @Column(name = "TITLE")
     private String title;
 
     // 채팅방 등록일자
-    @CreatedDate
-    private Date chatRoomCreateDate;
+    @Column(name = "CREATED_AT")
+    private Timestamp chatRoomCreateDate;
 }
