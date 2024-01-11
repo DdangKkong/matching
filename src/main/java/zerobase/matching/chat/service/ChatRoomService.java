@@ -1,6 +1,5 @@
 package zerobase.matching.chat.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zerobase.matching.chat.entity.ChatRoom;
@@ -99,8 +98,9 @@ private final UserChatRoomRepository userChatRoomRepository;
     public void deleteChatRoom(Long chatRoomId){
         // 해당 채팅방 자체를 삭제 해버린다.
 
-        List<UserChatRoom> allByChatRoom = userChatRoomRepository.findAllByChatRoomId(chatRoomId);
         ChatRoom chatRoom = findChatRoom(chatRoomId);
+        List<UserChatRoom> allByChatRoom = userChatRoomRepository.findAllByChatRoom(chatRoom);
+
 
         // 유저들 - 해당 채팅방 모두 삭제
         userChatRoomRepository.deleteAll(allByChatRoom);
@@ -109,13 +109,14 @@ private final UserChatRoomRepository userChatRoomRepository;
     }
 
     public void exitChatRoom(Long chatRoomId, Long userId){
-        List<UserChatRoom> userChatRooms = userChatRoomRepository.findAllByChatRoomId(chatRoomId);
+        ChatRoom chatRoom = findChatRoom(chatRoomId);
+        List<UserChatRoom> userChatRooms = userChatRoomRepository.findAllByChatRoom(chatRoom);
 
         UserChatRoom userChatRoom = userChatRoomRepository.
                 findByUserIdAndChatRoomId(chatRoomId, userId).orElseThrow(
                 () -> new RuntimeException("User isn't in ChatRoom")
         );
-        ChatRoom chatRoom = findChatRoom(chatRoomId);
+
 
         // 해당 chatroom에 있는 인원이 한 개일 때, 채팅방 자체를 없앤다.
 
