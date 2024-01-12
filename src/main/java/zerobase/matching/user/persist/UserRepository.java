@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import zerobase.matching.user.persist.entity.UserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, BigInteger> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
   Optional<UserEntity> findByUserLoginId(String userLoginId);
   Optional<UserEntity> findByEmail(String email);
   Optional<UserEntity> findByNickname(String nickname);

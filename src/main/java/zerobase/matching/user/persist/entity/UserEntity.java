@@ -38,7 +38,7 @@ public class UserEntity implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "USER_ID")
-  private BigInteger userId;
+  private long userId;
 
   @Column(name = "USER_LOGIN_ID")
   private String userLoginId;
