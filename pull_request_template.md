@@ -8,7 +8,7 @@ feat :  Comment(댓글) 기능 구현 (CRUD, 대댓글)
 
 위의 대댓글 기능 (parentId, level) 을 통해 어디에, 몇번째로 달린 대댓글인지를 확인 할 수 있다.
 
-refactor : Project(구인 게시글) 에서 미처 수정하지 못한 부분 수정 (불필요한 @NotNull 제거)
+refactor : Project(구인 게시글) 에서 미처 수정하지 못한 부분 수정 (불필요한 @NotNull 제거, Mapper 제거)
 
 **AS-IS**
 
