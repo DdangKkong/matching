@@ -1,9 +1,10 @@
 package zerobase.matching.chat.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import zerobase.matching.chat.dto.IdDto;
 import zerobase.matching.chat.entity.ChatRoom;
 import zerobase.matching.chat.dto.ChatRoomDto;
 import zerobase.matching.chat.service.ChatRoomService;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
-@Controller
+@RestController
 @RequestMapping("/chat") // 공통부분은 requestMapping을 한다.
 public class ChatRoomController {
 
@@ -27,24 +28,24 @@ public class ChatRoomController {
         this.userService = userService;
     }
 
-    @PostMapping("/create/{userId}")
-    public ResponseEntity<Void> createChatRoom(
-            @PathVariable("userId") Long userId, @RequestParam String name){
+    //@PathVariable("userId") Long userId
+    @PostMapping("/create")
+    public ResponseEntity<Void> createChatRoom(@RequestBody @Valid IdDto.UserRequest request){
 
-        UserEntity user = userService.findUser(userId);
+        UserEntity user = userService.findUser(request.getUserId());
 
-        ChatRoom chatRoom = chatRoomService.createChatRoom(user, name);
-        chatRoomService.createUserChatRoom(chatRoom, user, name);
+        ChatRoom chatRoom = chatRoomService.createChatRoom(request.getName());
+        chatRoomService.createUserChatRoom(chatRoom, user);
 
         return ResponseEntity.status(CREATED).build();
     }
 
-    @GetMapping("/rooms/{userId}")
+    @GetMapping("/rooms")
     public ResponseEntity<List<ChatRoomDto>> getChatRoomList(
-            @PathVariable("userId") Long userId){
+            @RequestBody @Valid IdDto.UserRequest request){
 
         // userChatRoomDto로 받은 list를 chatRoomDto로 변환해준다.
-        return ResponseEntity.ok(chatRoomService.findAllByUserId(userId)
+        return ResponseEntity.ok(chatRoomService.findAllByUserId(request.getUserId())
                 .stream()
                 .map(userChatRoom -> {
                     return ChatRoomDto.toDto(userChatRoom.getChatRoom());
@@ -57,30 +58,28 @@ public class ChatRoomController {
 //                ).collect(Collectors.toList()));
     }
 
-    @PostMapping("/enter/{chatRoomId}/user/{userId}")
-    public ResponseEntity<Void> enterChatRoom(@PathVariable Long chatRoomId,
-                                              @PathVariable Long userId){
+    @PostMapping("/enter")
+    public ResponseEntity<Void> enterChatRoom(@RequestBody @Valid IdDto.UserRequest request){
 
-        ChatRoom chatRoom = chatRoomService.findChatRoom(chatRoomId);
-        UserEntity user = userService.findUser(userId);
+        ChatRoom chatRoom = chatRoomService.findChatRoom(request.getChatRoomId());
+        UserEntity user = userService.findUser(request.getUserId());
         chatRoomService.enterChatRoom(chatRoom, user);
 
         return ResponseEntity.status(OK).build();
     }
 
-    @PostMapping("/delete/{chatRoomId}")
-    public ResponseEntity<Void> deleteChatRoom(@PathVariable Long chatRoomId){
+    @PostMapping("/delete")
+    public ResponseEntity<Void> deleteChatRoom(@RequestBody @Valid IdDto.UserRequest request){
 
-        chatRoomService.deleteChatRoom(chatRoomId);
+        chatRoomService.deleteChatRoom(request.getChatRoomId());
 
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    @PostMapping("/exit/{chatRoomId}/user/{userId}")
-    public ResponseEntity<Void> exitChatRoom(@PathVariable Long chatRoomId,
-                                             @PathVariable Long userId){
+    @PostMapping("/exit")
+    public ResponseEntity<Void> exitChatRoom(@RequestBody @Valid IdDto.UserRequest request){
 
-        chatRoomService.exitChatRoom(chatRoomId, userId);
+        chatRoomService.exitChatRoom(request.getChatRoomId(), request.getUserId());
 
         return ResponseEntity.status(NO_CONTENT).build();
     }

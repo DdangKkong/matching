@@ -25,7 +25,7 @@ private final UserChatRoomRepository userChatRoomRepository;
         this.userChatRoomRepository = userChatRoomRepository;
     }
 
-    public ChatRoom createChatRoom(UserEntity user, String name){
+    public ChatRoom createChatRoom(String name){
         // 채팅방을 만든다.
 
         // 채팅방 인스턴스 생성
@@ -38,7 +38,7 @@ private final UserChatRoomRepository userChatRoomRepository;
         return chatRoomRepository.save(chatRoom);
     }
 
-    public void createUserChatRoom(ChatRoom chatRoom, UserEntity user, String name){
+    public void createUserChatRoom(ChatRoom chatRoom, UserEntity user){
 
 
         // 해당 user의 userChatRoom 생성
@@ -103,7 +103,9 @@ private final UserChatRoomRepository userChatRoomRepository;
 
 
         // 유저들 - 해당 채팅방 모두 삭제
-        userChatRoomRepository.deleteAll(allByChatRoom);
+        if(!allByChatRoom.isEmpty()){
+            userChatRoomRepository.deleteAll(allByChatRoom);
+        }
         // 해당 채팅방 삭제
         chatRoomRepository.delete(chatRoom);
     }
@@ -113,12 +115,12 @@ private final UserChatRoomRepository userChatRoomRepository;
         List<UserChatRoom> userChatRooms = userChatRoomRepository.findAllByChatRoom(chatRoom);
 
         UserChatRoom userChatRoom = userChatRoomRepository.
-                findByUserIdAndChatRoomId(chatRoomId, userId).orElseThrow(
+                findByUserIdAndChatRoomId(userId, chatRoomId).orElseThrow(
                 () -> new RuntimeException("User isn't in ChatRoom")
         );
 
 
-        // 해당 chatroom에 있는 인원이 한 개일 때, 채팅방 자체를 없앤다.
+        // 해당 chatroom에 있는 인원이 한 명일 때, 채팅방 자체를 없앤다.
 
         if (userChatRooms.size() == 1) {
             userChatRoomRepository.delete(userChatRoom);
