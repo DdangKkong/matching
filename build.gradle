@@ -27,7 +27,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -58,6 +57,8 @@ dependencies {
 	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
     // channelInterceptorAdator
 	implementation 'org.springframework:spring-messaging:6.0.11'
+
+
 }
 
 tasks.named('bootBuildImage') {

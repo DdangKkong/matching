@@ -3,6 +3,8 @@ package zerobase.matching.chat.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import zerobase.matching.chat.dto.IdDto;
 import zerobase.matching.chat.entity.ChatRoom;
@@ -15,7 +17,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
-@RestController
+@Controller
 @RequestMapping("/chat") // 공통부분은 requestMapping을 한다.
 public class ChatRoomController {
 
@@ -83,4 +85,5 @@ public class ChatRoomController {
 
         return ResponseEntity.status(NO_CONTENT).build();
     }
+
 }

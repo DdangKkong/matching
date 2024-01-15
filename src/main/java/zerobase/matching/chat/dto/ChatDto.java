@@ -11,7 +11,8 @@ import zerobase.matching.chat.type.ChatType;
 public class ChatDto {
 
     private Long userId;
-    private Long chatRoomId;
+    private Long roomId;
+    private String sender;
     private String chatContext;
     private ChatType chatType;
 

@@ -12,14 +12,16 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Autowired
-    private StompHandler stompHandler;
+//    @Autowired
+//    private StompHandler stompHandler;
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // addEndpoint : 소켓 연결 URI -> Socket연결을 위한 것
         // setAllowedOriginPatterns : CORS 설정
         // withSockJS : 소켓을 지원하지 않는 브라우저이면 SockJS 사용하도록 설정
-        registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*")
+//                .withSockJS()
+        ;
     }
 
     @Override
@@ -33,9 +35,9 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
         // 채팅방 구독한 인원들에게 메세지 전달
         registry.setApplicationDestinationPrefixes("/pub");
     }
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) { // 핸들러 등록
-        // connect / disconnect 인터셉터
-        registration.interceptors(stompHandler);
-    }
+//    @Override
+//    public void configureClientInboundChannel(ChannelRegistration registration) { // 핸들러 등록
+//        // connect / disconnect 인터셉터
+//        registration.interceptors(stompHandler);
+//    }
 }
