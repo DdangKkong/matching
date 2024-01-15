@@ -1,6 +1,5 @@
 package zerobase.matching.project.service;
 
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +30,7 @@ public class ProjectService {
   // 프로젝트 구인 글 작성
   public ProjectDto createProject(long userId, String title, String content,
       ProjectOnOffline projectOnOffline, String place, int numberOfRecruit,
-      @NotNull LocalDate dueDate){
+      LocalDate dueDate){
     UserEntity user = getUser(userId);
 
     return ProjectDto.fromEntity(projectRepository.save(

@@ -1,4 +1,4 @@
-package zerobase.matching.project.domain;
+package zerobase.matching.comment.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import zerobase.matching.project.domain.Project;
 import zerobase.matching.user.persist.entity.UserEntity;
 
 @Getter // Dto 에서 builder.get~~ 하기 위해
@@ -22,44 +23,44 @@ import zerobase.matching.user.persist.entity.UserEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "comment")
+@Table(name = "COMMENT")
 public class Comment {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
+  @Column(name = "COMMENT_ID")
   private long commentId;
 
   // 내용
-  @Column(name = "content")
+  @Column(name = "CONTENT")
   private String content;
 
   // 댓글 작성 일시
-  @Column(name = "create_time")
+  @Column(name = "CREATED_AT")
   private LocalDateTime createTime;
 
   // 댓글 수정 일시
-  @Column(name = "update_time")
+  @Column(name = "UPDATED_AT")
   private LocalDateTime updateTime;
 
   // 댓글 삭제 일시
-  @Column(name = "delete_time")
+  @Column(name = "DELETED_AT")
   private LocalDateTime deleteTime;
 
   // 부모 댓글 고유번호
-  @Column(name = "parent_id")
+  @Column(name = "PARENT_ID")
   private long parentId;
 
   // 계층
-  @Column(name = "level")
+  @Column(name = "LEVEL")
   private int level;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "USER_ID")
   private UserEntity user;
 
   @ManyToOne
-  @JoinColumn(name = "project_id")
+  @JoinColumn(name = "PROJECT_ID")
   private Project project ;
 
 }
