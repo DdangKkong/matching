@@ -14,13 +14,13 @@ import zerobase.matching.comment.domain.Comment;
 public class CommentDto {
 
   // 댓글 id
-  private long commentId;
+  private int commentId;
 
   // 구인 글 id
-  private long projectId;
+  private int projectId;
 
   // 회원 id
-  private long userId;
+  private int userId;
 
   // 내용
   private String content;
@@ -35,7 +35,7 @@ public class CommentDto {
   private LocalDateTime deleteTime;
 
   // 부모 댓글 고유번호
-  private long parentId;
+  private int parentId;
 
   // 계층
   private int level;

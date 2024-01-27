@@ -1,23 +1,11 @@
 package zerobase.matching.project.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+import zerobase.matching.user.persist.entity.UserEntity;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import zerobase.matching.user.persist.entity.UserEntity;
 
 @Getter // Dto 에서 builder.get~~ 하기 위해
 @Setter // 구인 글 수정할때 project.set~~ 하기 위해
@@ -31,7 +19,7 @@ public class Project {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "PROJECT_ID")
-  private long projectId;
+  private int projectId;
 
   // 제목
   @Column(name = "TITLE")
@@ -50,14 +38,6 @@ public class Project {
   @Column(name = "PLACE")
   private String place;
 
-  // 모집 인원
-  @Column(name = "NUMBER_OF_RECRUIT")
-  private int numberOfRecruit;
-
-  // 현재 인원
-  @Column(name = "CURRENT_RECRUIT")
-  private int currentRecruit;
-
   // 작성 일시
   @Column(name = "CREATE_TIME")
   private LocalDateTime createTime;
@@ -65,6 +45,10 @@ public class Project {
   // 수정 일시
   @Column(name = "UPDATE_TIME")
   private LocalDateTime updateTime;
+
+  // 삭제 일시
+  @Column(name = "DELETE_TIME")
+  private LocalDateTime deleteTime;
 
   // 구인 마감 날짜
   @Column(name = "DUE_DATE")
@@ -74,14 +58,19 @@ public class Project {
   @JoinColumn(name = "USER_ID")
   private UserEntity user;
 
+  // 모집군의 갯수
+  @Column(name = "RECRUITMENT_NUM")
+  private int recruitmentNum;
+
+
+
   public static Project setEntity(Project project, String title, String content,
-      ProjectOnOffline projectOnOffline, String place, int numberOfRecruit, LocalDate dueDate) {
+      String projectOnOffline, String place, LocalDate dueDate) {
 
     project.setTitle(title);
     project.setContent(content);
-    project.setProjectOnOffline(projectOnOffline);
+    project.setProjectOnOffline(ProjectOnOffline.valueOf(projectOnOffline));
     project.setPlace(place);
-    project.setNumberOfRecruit(numberOfRecruit);
     project.setDueDate(dueDate);
     project.setUpdateTime(LocalDateTime.now());
 
@@ -92,12 +81,12 @@ public class Project {
     // 구인 글 삭제시, 댓글을 보지 못하기에 title 제외한 요소들 초기화로 대체
     project.setContent("deleted");
     project.setProjectOnOffline(ProjectOnOffline.deleted);
+//    project.setDepartment(Department.deleted);
     project.setPlace("deleted");
-    project.setNumberOfRecruit(0);
-    project.setCurrentRecruit(0);
-    project.setDueDate(LocalDate.MIN);
-    project.setCreateTime(LocalDateTime.MIN);
-    project.setUpdateTime(LocalDateTime.MIN);
+    project.setDueDate(null);
+    project.setCreateTime(null);
+    project.setUpdateTime(null);
+    project.setDeleteTime(LocalDateTime.now());
 
     return project;
   }

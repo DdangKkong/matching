@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import zerobase.matching.comment.domain.Comment;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends JpaRepository<Comment, Integer> {
 }
