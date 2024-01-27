@@ -17,6 +17,9 @@ Department (모집군) 관련 설명 : 기존에 생각했던 방식은 따로 D
 MappingProjectRecruit (DB) 설명 : 하나의 project 에 여러개의 recruitment 가 포함될 수 있기 때문에 projectId 와 recruitmentId 의 관계를
  mapping 해주는 관계형 DB 가 필요함. 하여 MappingProjectRecruit 라는 DB 를 추가로 만들어서 project (DB) 와 recruitment (DB) 의 관계를 정의함.
 
+refactor : 데이터베이스 id 의 데이터 타입을 bigint 까지 사용할 필요가 없고 mysql 에서 long 을 지원하지 않기에
+ 모든 id 의 데이터 타입을 Integer 로 변경함.
+
 **AS-IS**
 
 application (신청서), recruitment (모집 현황) 구현 완료.
