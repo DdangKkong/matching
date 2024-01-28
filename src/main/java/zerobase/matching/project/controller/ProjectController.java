@@ -4,20 +4,15 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import zerobase.matching.project.dto.CreateProject;
-import zerobase.matching.project.dto.DeleteProject;
-import zerobase.matching.project.dto.ReadProject;
-import zerobase.matching.project.dto.UpdateProject;
+import org.springframework.web.bind.annotation.*;
+import zerobase.matching.project.dto.*;
 import zerobase.matching.project.dto.paging.ProjectPagingResponse;
+import zerobase.matching.project.recruitment.dto.RecruitmentDto;
 import zerobase.matching.project.service.ProjectService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,48 +26,58 @@ public class ProjectController {
   public ResponseEntity<CreateProject.Response> createProject(
       @RequestBody @Valid CreateProject.Request request
   ){
-    CreateProject.Response response = CreateProject.Response.fromEntity(
-        projectService.createProject(
-            request.getUserId(), request.getTitle(), request.getContent(),
-            request.getProjectOnOffline(), request.getPlace(),
-            request.getNumberOfRecruit(), request.getDueDate()
-        )
-    );
+    ProjectDto projectDto = projectService.createProject(request);
+
+    // List<Recruitment> --> List<RecruitmentDto> 변환
+    List<RecruitmentDto> recruitmentDtoList = ListToList(request.getRecruitmentNum(), projectDto);
+
+    CreateProject.Response response = CreateProject.Response.fromEntity(projectDto);
+    response.setRecruitmentDtos(recruitmentDtoList);
+
     return ResponseEntity.ok(response);
   }
 
   // 프로젝트 구인 글 읽기
   @GetMapping("/projects")
   public ResponseEntity<ReadProject.Response> readProject(
-      @RequestParam(value = "projectId") long projectId){
-    ReadProject.Response response = ReadProject.Response.fromEntity(
-        projectService.readProject(projectId)
-    );
+      @RequestParam(value = "projectId") int projectId){
+    ProjectDto projectDto = projectService.readProject(projectId);
+
+    // List<Recruitment> --> List<RecruitmentDto> 변환
+    List<RecruitmentDto> recruitmentDtoList = ListToList(projectDto.getRecruitmentNum(), projectDto);
+
+    ReadProject.Response response = ReadProject.Response.fromEntity(projectDto);
+    response.setRecruitmentDtos(recruitmentDtoList);
+
     return ResponseEntity.ok(response);
   }
 
   // 프로젝트 구인 글 수정
   @PutMapping("/projects")
   public ResponseEntity<UpdateProject.Response> updateProject(
-      @RequestBody @Valid UpdateProject.Request request
-  ){
-    UpdateProject.Response response = UpdateProject.Response.fromEntity(
-        projectService.updateProject(
-            request.getUserId(), request.getProjectId(), request.getTitle(),
-            request.getContent(), request.getProjectOnOffline(), request.getPlace(),
-            request.getNumberOfRecruit(), request.getDueDate()
-        )
-    );
+      @RequestBody @Valid UpdateProject.Request request){
+    ProjectDto projectDto = projectService.updateProject(request);
+
+    // List<Recruitment> --> List<RecruitmentDto> 변환
+    List<RecruitmentDto> recruitmentDtoList = ListToList(projectDto.getRecruitmentNum(), projectDto);
+
+    UpdateProject.Response response = UpdateProject.Response.fromEntity(projectDto);
+    response.setRecruitmentDtos(recruitmentDtoList);
+
     return ResponseEntity.ok(response);
   }
 
   // 프로젝트 구인 글 삭제
   @DeleteMapping("/projects")
-  public ResponseEntity<DeleteProject.Response> deleteProject(@RequestParam long projectId,
+  public ResponseEntity<DeleteProject.Response> deleteProject(@RequestParam int projectId,
     @RequestBody @Valid DeleteProject.Request request){
-    DeleteProject.Response response = DeleteProject.Response.fromEntity(
-        projectService.deleteProject(request.getUserId(), projectId)
-    );
+    ProjectDto projectDto = projectService.deleteProject(request.getUserId(), projectId);
+
+    // List<Recruitment> --> List<RecruitmentDto> 변환
+    List<RecruitmentDto> recruitmentDtoList = ListToList(projectDto.getRecruitmentNum(), projectDto);
+
+    DeleteProject.Response response = DeleteProject.Response.fromEntity(projectDto);
+    response.setRecruitmentDtos(recruitmentDtoList);
     return ResponseEntity.ok(response);
   }
 
@@ -82,8 +87,19 @@ public class ProjectController {
       @RequestParam(value = "page", required = false, defaultValue = "1") @Positive int page,
       @RequestParam("size") @Positive int size) {
 
-    return projectService.pagingProjects(page, size);
+    return projectService.pagingProjects(page-1, size); // 우리가 생각하는 1 페이지는 page 값이 0일때 이다
   }
 
+
+  // List<Recruitment> --> List<RecruitmentDto> 변환
+  private List<RecruitmentDto> ListToList(int recruitNum, ProjectDto projectDto) {
+    List<RecruitmentDto> recruitmentDtoList = new ArrayList<>();
+
+    recruitmentDtoList = projectDto.getRecruitmentList().stream().map(
+            Recruitment -> RecruitmentDto.fromEntity(Recruitment)).collect(Collectors.toList());
+
+    return recruitmentDtoList;
+
+  }
 
 }

@@ -56,17 +56,17 @@ public class CommentService {
   }
 
   // 댓글 읽기
-  public CommentDto readComment(long commentId) {
+  public CommentDto readComment(int commentId) {
     Comment comment = getComment(commentId);
 
     return CommentDto.fromEntity(comment);
   }
 
   // 댓글 수정
-  public CommentDto updateComment(long commentId, UpdateComment.Request request) {
+  public CommentDto updateComment(int commentId, UpdateComment.Request request) {
     Comment comment = getComment(commentId);
     UserEntity user = getUser(request.getUserId());
-    long writerId = comment.getUser().getUserId();
+    int writerId = comment.getUser().getUserId();
 
     // 작성자가 아닌 경우 댓글 수정 불가
     if (!Objects.equals(writerId, user.getUserId())) {
@@ -82,10 +82,10 @@ public class CommentService {
   }
 
   // 댓글 삭제
-  public CommentDto deleteComment(long commentId, DeleteComment.Request request) {
+  public CommentDto deleteComment(int commentId, DeleteComment.Request request) {
     Comment comment = getComment(commentId);
     UserEntity user = getUser(request.getUserId());
-    long writerId = comment.getUser().getUserId();
+    int writerId = comment.getUser().getUserId();
 
     // 작성자가 아닌 경우 댓글 삭제 불가
     if (!Objects.equals(writerId, user.getUserId())) {
@@ -99,17 +99,17 @@ public class CommentService {
     return CommentDto.fromEntity(commentRepository.save(comment));
   }
 
-  private UserEntity getUser(long userId) {
+  private UserEntity getUser(int userId) {
     return userRepository.findById(userId)
         .orElseThrow(() -> new RuntimeException("회원 정보가 알맞지 않습니다."));
   }
 
-  private Project getProject(long projectId) {
+  private Project getProject(int projectId) {
     return projectRepository.findById(projectId)
         .orElseThrow(() -> new RuntimeException("프로젝트 구인 글의 정보가 알맞지 않습니다."));
   }
 
-  private Comment getComment(long commentId) {
+  private Comment getComment(int commentId) {
     return commentRepository.findById(commentId)
         .orElseThrow(() -> new RuntimeException("댓글 정보가 알맞지 않습니다"));
   }

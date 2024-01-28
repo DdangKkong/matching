@@ -29,7 +29,7 @@ public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "COMMENT_ID")
-  private long commentId;
+  private int commentId;
 
   // 내용
   @Column(name = "CONTENT")
@@ -49,7 +49,7 @@ public class Comment {
 
   // 부모 댓글 고유번호
   @Column(name = "PARENT_ID")
-  private long parentId;
+  private int parentId;
 
   // 계층
   @Column(name = "LEVEL")

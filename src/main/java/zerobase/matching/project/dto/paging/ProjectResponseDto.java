@@ -1,14 +1,11 @@
 package zerobase.matching.project.dto.paging;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import zerobase.matching.project.domain.Project;
 import zerobase.matching.project.domain.ProjectOnOffline;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,10 +14,10 @@ import zerobase.matching.project.domain.ProjectOnOffline;
 @AllArgsConstructor
 public class ProjectResponseDto {
   // 구인 글 id
-  private long projectId;
+  private int projectId;
 
   // 회원 id
-  private long userId;
+  private int userId;
 
   // 제목
   private String title;
@@ -53,8 +50,8 @@ public class ProjectResponseDto {
   @Getter
   public static class Response {
 
-    private long projectId;
-    private long userId;
+    private int projectId;
+    private int userId;
     private String title;
     private String content;
     private String projectOnOffline;
@@ -62,6 +59,7 @@ public class ProjectResponseDto {
     private int numberOfRecruit;
     private LocalDateTime createTime;
     private LocalDate dueDate;
+    private int recruitmentNum;
 
     public static ProjectResponseDto.Response fromEntity(Project project) {
       return ProjectResponseDto.Response.builder()
@@ -71,9 +69,9 @@ public class ProjectResponseDto {
           .content(project.getContent())
           .projectOnOffline(project.getProjectOnOffline().toString())
           .place(project.getPlace())
-          .numberOfRecruit(project.getNumberOfRecruit())
           .createTime(LocalDateTime.now())
           .dueDate(project.getDueDate())
+          .recruitmentNum(project.getRecruitmentNum())
           .build();
     }
 

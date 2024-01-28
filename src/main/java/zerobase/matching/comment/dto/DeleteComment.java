@@ -11,7 +11,7 @@ public class DeleteComment {
   public static class Request {
 
     @NotNull
-    private long userId;
+    private int userId;
 
   }
 
@@ -19,14 +19,14 @@ public class DeleteComment {
   @Getter
   public static class Response {
 
-    private long commentId;
-    private long projectId;
-    private long userId;
+    private int commentId;
+    private int projectId;
+    private int userId;
     private String content;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private LocalDateTime deleteTime;
-    private long parentId;
+    private int parentId;
     private int level;
 
     public static Response fromEntity(CommentDto commentDto){

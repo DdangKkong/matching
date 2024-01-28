@@ -11,7 +11,7 @@ public class Recomment {
   public static class Request {
 
     @NotNull
-    private long parentId;
+    private int parentId;
     @NotNull
     private String content;
   }
@@ -20,12 +20,12 @@ public class Recomment {
   @Getter
   public static class Response {
 
-    private long commentId;
-    private long projectId;
-    private long userId;
+    private int commentId;
+    private int projectId;
+    private int userId;
     private String content;
     private LocalDateTime createTime;
-    private long parentId;
+    private int parentId;
     private int level;
 
     public static Response fromEntity(CommentDto commentDto){

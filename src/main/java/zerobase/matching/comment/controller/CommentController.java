@@ -49,7 +49,7 @@ public class CommentController {
   // 댓글 읽기
   @GetMapping
   public ResponseEntity<ReadComment.Response> readComment(
-      @RequestParam(value = "commentId") long commentId){
+      @RequestParam(value = "commentId") int commentId){
     ReadComment.Response response = ReadComment.Response.fromEntity(
         commentService.readComment(commentId)
     );
@@ -59,7 +59,7 @@ public class CommentController {
   // 댓글 수정
   @PutMapping
   public ResponseEntity<UpdateComment.Response> updateComment(
-      @RequestParam(value = "commentId") long commentId,
+      @RequestParam(value = "commentId") int commentId,
       @RequestBody @Valid UpdateComment.Request request){
     UpdateComment.Response response = UpdateComment.Response.fromEntity(
         commentService.updateComment(commentId, request)
@@ -70,7 +70,7 @@ public class CommentController {
   // 댓글 삭제
   @DeleteMapping
   public ResponseEntity<DeleteComment.Response> deleteComment(
-      @RequestParam long commentId,
+      @RequestParam int commentId,
       @RequestBody @Valid DeleteComment.Request request){
     DeleteComment.Response response = DeleteComment.Response.fromEntity(
         commentService.deleteComment(commentId, request)

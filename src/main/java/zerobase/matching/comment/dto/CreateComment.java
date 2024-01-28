@@ -11,13 +11,13 @@ public class CreateComment {
   public static class Request {
 
     @NotNull
-    private long projectId;
+    private int projectId;
     @NotNull
-    private long userId;
+    private int userId;
     @NotNull
     private String content;
 
-    private long parentId;
+    private int parentId;
 
     private int level;
   }
@@ -26,14 +26,14 @@ public class CreateComment {
   @Getter
   public static class Response {
 
-    private long commentId;
-    private long projectId;
-    private long userId;
+    private int commentId;
+    private int projectId;
+    private int userId;
     private String content;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private LocalDateTime deleteTime;
-    private long parentId;
+    private int parentId;
     private int level;
 
     public static CreateComment.Response fromEntity(CommentDto commentDto) {

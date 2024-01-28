@@ -110,7 +110,7 @@ public class SignUp {
   @Builder
   public static class Response{
 
-    private Long userId;
+    private int userId;
 
     private Timestamp registerTime;
     private String userLoginId;

@@ -1,10 +1,14 @@
 package zerobase.matching.project.dto;
 
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+import zerobase.matching.project.recruitment.dto.RecruitmentDto;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class DeleteProject {
 
@@ -12,38 +16,43 @@ public class DeleteProject {
   public static class Request {
 
     @NotNull
-    private long userId;
+    private int userId;
 
   }
 
   @Builder
   @Getter
+  @Setter
   public static class Response {
 
-    private long projectId;
-    private long userId;
+    private int projectId;
+    private int userId;
     private String title;
     private String content;
     private String projectOnOffline;
     private String place;
-    private int numberOfRecruit;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+    private LocalDateTime deleteTime;
     private LocalDate dueDate;
+    private int recruitmentNum;
+    private List<RecruitmentDto> recruitmentDtos;
 
-    public static Response fromEntity(ProjectDto projectDto){
+    // recruitmentDtos 는 Controller 에서 따로 넣어줌
+    public static DeleteProject.Response fromEntity(ProjectDto projectDto){
       return Response.builder()
-          .projectId(projectDto.getProjectId())
-          .userId(projectDto.getUserId())
-          .title(projectDto.getTitle())
-          .content(projectDto.getContent())
-          .projectOnOffline(projectDto.getProjectOnOffline().toString())
-          .place(projectDto.getPlace())
-          .numberOfRecruit(projectDto.getNumberOfRecruit())
-          .createTime(projectDto.getCreateTime())
-          .updateTime(projectDto.getUpdateTime())
-          .dueDate(projectDto.getDueDate())
-          .build();
+              .projectId(projectDto.getProjectId())
+              .userId(projectDto.getUserId())
+              .title(projectDto.getTitle())
+              .content(projectDto.getContent())
+              .projectOnOffline(projectDto.getProjectOnOffline().toString())
+              .place(projectDto.getPlace())
+              .createTime(projectDto.getCreateTime())
+              .updateTime(projectDto.getUpdateTime())
+              .deleteTime(projectDto.getDeleteTime())
+              .dueDate(projectDto.getDueDate())
+              .recruitmentNum(projectDto.getRecruitmentNum())
+              .build();
     }
 
   }
