@@ -38,7 +38,9 @@ public class UserEntity implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "USER_ID")
+
   private int userId;
+
 
   @Column(name = "USER_LOGIN_ID")
   private String userLoginId;
