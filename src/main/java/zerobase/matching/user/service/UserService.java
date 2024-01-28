@@ -132,4 +132,10 @@ public class UserService {
     // # accessToken 발행
     return accessToken;
   }
+
+  public UserEntity findUser(Long userId){
+    return userRepository.findByUserId(userId).orElseThrow(
+            ()-> new RuntimeException("NoUser")
+    );
+  }
 }
