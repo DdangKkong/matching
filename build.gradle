@@ -25,8 +25,11 @@ dependencies {
 	testImplementation 'junit:junit:4.13.1'
     runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// @@Mapper 사용 위해
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
