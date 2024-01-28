@@ -22,12 +22,46 @@ repositories {
 }
 
 dependencies {
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	testImplementation 'junit:junit:4.13.1'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// @@Mapper 사용 위해
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+
+	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars:sockjs-client:1.5.1'
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+
+	// spring security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// xml.bind 관련 에러 방지용
+	implementation 'com.sun.xml.bind:jaxb-impl:4.0.1'
+	implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
+	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+
+	// 어노테이션 @Valid 사용하기 위한 라이브러리(jakarta)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// jwt 관련 라이브러리
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	// javaassist
+	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
+    // channelInterceptorAdator
+	implementation 'org.springframework:spring-messaging:6.0.11'
+
+
 }
 
 tasks.named('bootBuildImage') {
