@@ -133,7 +133,7 @@ public class UserService {
     return accessToken;
   }
 
-  public UserEntity findUser(Long userId){
+  public UserEntity findUser(int userId){
     return userRepository.findByUserId(userId).orElseThrow(
             ()-> new RuntimeException("NoUser")
     );

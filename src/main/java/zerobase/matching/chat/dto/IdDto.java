@@ -9,8 +9,8 @@ public class IdDto {
     @Builder
     public static class UserRequest{
 
-        private Long userId;
-        private Long chatRoomId;
+        private int userId;
+        private int chatRoomId;
         private String name;
     }
 }

@@ -8,7 +8,7 @@ import zerobase.matching.chat.entity.ChatRoom;
 import java.util.Optional;
 
 
-public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
+public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
     @Query("select c from ChatRoom c where c.chatroomId =:chatRoomId")
-    Optional<ChatRoom> findByChatroomId(Long chatRoomId);
+    Optional<ChatRoom> findByChatroomId(int chatRoomId);
 }

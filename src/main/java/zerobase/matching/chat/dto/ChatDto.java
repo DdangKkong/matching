@@ -10,8 +10,8 @@ import zerobase.matching.chat.type.ChatType;
 @Builder
 public class ChatDto {
 
-    private Long userId;
-    private Long roomId;
+    private int userId;
+    private int roomId;
     private String sender;
     private String chatContext;
     private ChatType chatType;

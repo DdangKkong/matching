@@ -53,12 +53,12 @@ private final UserChatRoomRepository userChatRoomRepository;
 
 
 
-    public List<UserChatRoom> findAllByUserId(Long userId){
+    public List<UserChatRoom> findAllByUserId(int userId){
         // 해당 user의 UserChatRoom 찾기
         return userChatRoomRepository.findAllByUserId(userId);
     }
 
-    public ChatRoom findChatRoom(Long chatRoomId){
+    public ChatRoom findChatRoom(int chatRoomId){
         // 채팅방 찾아주는 기능
         return chatRoomRepository.findByChatroomId(chatRoomId).orElseThrow(
                 () -> new RuntimeException("ChatRoom doesn't exist")
@@ -73,7 +73,7 @@ private final UserChatRoomRepository userChatRoomRepository;
 //        );
 //    }
 
-    public UserChatRoom findUserChatRoom(Long chatRoomId, Long userId){
+    public UserChatRoom findUserChatRoom(int chatRoomId, int userId){
         return userChatRoomRepository.findByUserIdAndChatRoomId(userId, chatRoomId).orElseThrow(
                 ()->new RuntimeException("UserChatRoom doesn't exist")
         );
@@ -95,7 +95,7 @@ private final UserChatRoomRepository userChatRoomRepository;
 
     }
 
-    public void deleteChatRoom(Long chatRoomId){
+    public void deleteChatRoom(int chatRoomId){
         // 해당 채팅방 자체를 삭제 해버린다.
 
         ChatRoom chatRoom = findChatRoom(chatRoomId);
@@ -110,7 +110,7 @@ private final UserChatRoomRepository userChatRoomRepository;
         chatRoomRepository.delete(chatRoom);
     }
 
-    public void exitChatRoom(Long chatRoomId, Long userId){
+    public void exitChatRoom(int chatRoomId, int userId){
         ChatRoom chatRoom = findChatRoom(chatRoomId);
         List<UserChatRoom> userChatRooms = userChatRoomRepository.findAllByChatRoom(chatRoom);
 

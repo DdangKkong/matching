@@ -10,7 +10,7 @@ import zerobase.matching.chat.entity.ChatRoom;
 @Builder
 public class ChatRoomDto {
 
-    private Long chatroomId;
+    private int chatroomId;
     private String title;
 
     public static ChatRoomDto toDto(ChatRoom chatroom){

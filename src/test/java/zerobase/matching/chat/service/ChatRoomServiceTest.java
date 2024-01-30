@@ -42,7 +42,7 @@ class ChatRoomServiceTest {
     void createChatRoom() {
 
 //        ChatRoom chatRoom = ChatRoom.builder()
-//                .chatroomId(1L)
+//                .chatroomId(10)
 //                .chatRoomCreateDate(Timestamp.valueOf(LocalDateTime.now()))
 //                .title("chatroom1")
 //                .build();
@@ -61,18 +61,18 @@ class ChatRoomServiceTest {
 
         //given
         ChatRoom chatRoom = ChatRoom.builder()
-            .chatroomId(1L)
+            .chatroomId(10)
             .chatRoomCreateDate(Timestamp.valueOf(LocalDateTime.now()))
             .title("chatroom1")
             .build();
 
         UserEntity user = UserEntity.builder()
-                .userId(1L)
+                .userId(10)
                 .build();
 
-//        given(chatRoomRepository.findById(1L))
+//        given(chatRoomRepository.findById(10))
 //                .willReturn(Optional.of(chatRoom));
-//        given(userRepository.findById(1L))
+//        given(userRepository.findById(10))
 //                .willReturn(Optional.of(user));
 
         // when
@@ -85,24 +85,24 @@ class ChatRoomServiceTest {
     @Test
     // 리스트 확인하는 방법이 이렇게 하는게 맞는지 궁금
     void findAllByUserId() {
-        UserEntity user1 = UserEntity.builder().userId(1L).build();
+        UserEntity user1 = UserEntity.builder().userId(10).build();
 
         UserChatRoom userChatRoom1 = UserChatRoom.builder()
                 .user(user1)
-                .userChatRoomId(10L)
+                .userChatRoomId(100)
                 .build();
 
         UserChatRoom userChatRoom2 = UserChatRoom.builder()
                 .user(user1)
-                .userChatRoomId(20L)
+                .userChatRoomId(200)
                 .build();
 
         List<UserChatRoom> userChatRooms = Arrays.asList(userChatRoom1, userChatRoom2);
 
-        given(userChatRoomRepository.findAllByUserId(1L)).willReturn(userChatRooms);
+        given(userChatRoomRepository.findAllByUserId(10)).willReturn(userChatRooms);
 
         // when
-        List<UserChatRoom> userChatRooms2 = chatRoomService.findAllByUserId(1L);
+        List<UserChatRoom> userChatRooms2 = chatRoomService.findAllByUserId(10);
 
         // then
         assertThat(userChatRooms2.size()).isEqualTo(2);
@@ -119,38 +119,38 @@ class ChatRoomServiceTest {
     void findChatRoom() {
         // given
         ChatRoom chatRoom = ChatRoom.builder()
-                .chatroomId(1L)
+                .chatroomId(10)
                 .chatRoomCreateDate(Timestamp.valueOf(LocalDateTime.now()))
                 .title("chatroom1")
                 .build();
 
-        given(chatRoomRepository.findByChatroomId(1L)).willReturn(Optional.of(chatRoom));
+        given(chatRoomRepository.findByChatroomId(10)).willReturn(Optional.of(chatRoom));
 
         // when & then
-        assertThat(chatRoomService.findChatRoom(1L)).isEqualTo(chatRoom);
+        assertThat(chatRoomService.findChatRoom(10)).isEqualTo(chatRoom);
 
     }
 
     @Test
     void findUserChatRoom() {
         UserEntity user = UserEntity.builder()
-                .userId(1L)
+                .userId(10)
                 .build();
 
         ChatRoom chatRoom = ChatRoom.builder()
-                .chatroomId(1L)
+                .chatroomId(10)
                 .build();
 
         UserChatRoom userChatRoom = UserChatRoom.builder()
-                .userChatRoomId(1L)
+                .userChatRoomId(10)
                 .user(user)
                 .chatRoom(chatRoom)
                 .build();
 
-        given(userChatRoomRepository.findByUserIdAndChatRoomId(anyLong(),anyLong())).willReturn(Optional.of(userChatRoom));
+        given(userChatRoomRepository.findByUserIdAndChatRoomId(anyInt(),anyInt())).willReturn(Optional.of(userChatRoom));
 
         // when & then
-        assertThat(chatRoomService.findUserChatRoom(1L, 1L)).isEqualTo(userChatRoom);
+        assertThat(chatRoomService.findUserChatRoom(10, 10)).isEqualTo(userChatRoom);
     }
 
     @Test
@@ -158,21 +158,21 @@ class ChatRoomServiceTest {
     void enterChatRoom1() {
         // given
         UserEntity user = UserEntity.builder()
-                .userId(1L)
+                .userId(10)
                 .build();
 
         ChatRoom chatRoom = ChatRoom.builder()
-                .chatroomId(1L)
+                .chatroomId(10)
                 .build();
 
         UserChatRoom userChatRoom = UserChatRoom.builder()
                 .chatRoom(chatRoom)
                 .user(user)
-                .userChatRoomId(1L)
+                .userChatRoomId(10)
                 .build();
 
         // 해당 함수가 실행될 때 함수가 비어있도록 만든다.
-        given(userChatRoomRepository.findByUserIdAndChatRoomId(anyLong(),anyLong()))
+        given(userChatRoomRepository.findByUserIdAndChatRoomId(anyInt(),anyInt()))
                 .willReturn(empty());
 
         // then
@@ -188,21 +188,21 @@ class ChatRoomServiceTest {
     void enterChatRoom2() {
         // given
         UserEntity user = UserEntity.builder()
-                .userId(1L)
+                .userId(10)
                 .build();
 
         ChatRoom chatRoom = ChatRoom.builder()
-                .chatroomId(1L)
+                .chatroomId(10)
                 .build();
 
         UserChatRoom userChatRoom = UserChatRoom.builder()
                 .chatRoom(chatRoom)
                 .user(user)
-                .userChatRoomId(1L)
+                .userChatRoomId(10)
                 .build();
 
         // 해당 함수를 실행할 때 userChatRoom이 존재하게 한다.
-        given(userChatRoomRepository.findByUserIdAndChatRoomId(anyLong(),anyLong()))
+        given(userChatRoomRepository.findByUserIdAndChatRoomId(anyInt(),anyInt()))
                 .willReturn(Optional.of(userChatRoom));
 
         // then
@@ -218,37 +218,37 @@ class ChatRoomServiceTest {
     void deleteChatRoom() {
         // given
         ChatRoom chatRoom = ChatRoom.builder()
-                .chatroomId(1L)
+                .chatroomId(10)
                 .build();
 
 
         UserEntity user1 = UserEntity.builder()
-                .userId(1L)
+                .userId(10)
                 .build();
 
         UserEntity user2 = UserEntity.builder()
-                .userId(2L)
+                .userId(20)
                 .build();
 
         UserChatRoom userChatRoom1 = UserChatRoom.builder()
                 .user(user1)
                 .chatRoom(chatRoom)
-                .userChatRoomId(10L)
+                .userChatRoomId(100)
                 .build();
 
         UserChatRoom userChatRoom2 = UserChatRoom.builder()
                 .user(user2)
                 .chatRoom(chatRoom)
-                .userChatRoomId(20L)
+                .userChatRoomId(200)
                 .build();
 
         List<UserChatRoom> userChatRooms = Arrays.asList(userChatRoom1, userChatRoom2);
 
-        given(chatRoomRepository.findByChatroomId(1L)).willReturn(Optional.of(chatRoom));
+        given(chatRoomRepository.findByChatroomId(10)).willReturn(Optional.of(chatRoom));
         given(userChatRoomRepository.findAllByChatRoom(chatRoom)).willReturn(userChatRooms);
 
         // when
-        chatRoomService.deleteChatRoom(1L);
+        chatRoomService.deleteChatRoom(10);
 
         // then
         verify(userChatRoomRepository, times(1)).deleteAll(userChatRooms);
@@ -261,33 +261,33 @@ class ChatRoomServiceTest {
     void exitChatRoom1() {
         // given
         ChatRoom chatRoom = ChatRoom.builder()
-                .chatroomId(1L)
+                .chatroomId(10)
                 .build();
 
 
         UserEntity user1 = UserEntity.builder()
-                .userId(1L)
+                .userId(10)
                 .build();
 
         UserEntity user2 = UserEntity.builder()
-                .userId(2L)
+                .userId(20)
                 .build();
 
         UserChatRoom userChatRoom1 = UserChatRoom.builder()
                 .user(user1)
                 .chatRoom(chatRoom)
-                .userChatRoomId(10L)
+                .userChatRoomId(100)
                 .build();
 
         UserChatRoom userChatRoom2 = UserChatRoom.builder()
                 .user(user2)
                 .chatRoom(chatRoom)
-                .userChatRoomId(20L)
+                .userChatRoomId(200)
                 .build();
 
         List<UserChatRoom> userChatRooms = Arrays.asList(userChatRoom1, userChatRoom2);
 
-        given(chatRoomRepository.findByChatroomId(1L)).willReturn(Optional.of(chatRoom));
+        given(chatRoomRepository.findByChatroomId(10)).willReturn(Optional.of(chatRoom));
         given(userChatRoomRepository.findAllByChatRoom(chatRoom)).willReturn(userChatRooms);
 
         given(userChatRoomRepository.findByUserIdAndChatRoomId(
@@ -299,7 +299,7 @@ class ChatRoomServiceTest {
 //        )).willReturn(Optional.of(userChatRoom2));
 
         // when
-        chatRoomService.exitChatRoom(1L, 1L);
+        chatRoomService.exitChatRoom(10, 10);
 
         // then
         verify(userChatRoomRepository, times(1)).delete(userChatRoom1);
@@ -314,33 +314,33 @@ class ChatRoomServiceTest {
     void exitChatRoom2() {
         // given
         ChatRoom chatRoom = ChatRoom.builder()
-                .chatroomId(1L)
+                .chatroomId(10)
                 .build();
 
 
         UserEntity user1 = UserEntity.builder()
-                .userId(1L)
+                .userId(10)
                 .build();
 
         UserEntity user2 = UserEntity.builder()
-                .userId(2L)
+                .userId(20)
                 .build();
 
         UserChatRoom userChatRoom1 = UserChatRoom.builder()
                 .user(user1)
                 .chatRoom(chatRoom)
-                .userChatRoomId(10L)
+                .userChatRoomId(100)
                 .build();
 
         UserChatRoom userChatRoom2 = UserChatRoom.builder()
                 .user(user2)
                 .chatRoom(chatRoom)
-                .userChatRoomId(20L)
+                .userChatRoomId(200)
                 .build();
 
         List<UserChatRoom> userChatRooms = Arrays.asList(userChatRoom1);
 
-        given(chatRoomRepository.findByChatroomId(1L)).willReturn(Optional.of(chatRoom));
+        given(chatRoomRepository.findByChatroomId(10)).willReturn(Optional.of(chatRoom));
         given(userChatRoomRepository.findAllByChatRoom(chatRoom)).willReturn(userChatRooms);
 
         given(userChatRoomRepository.findByUserIdAndChatRoomId(
@@ -349,7 +349,7 @@ class ChatRoomServiceTest {
 
 
         // when
-        chatRoomService.exitChatRoom(1L, 1L);
+        chatRoomService.exitChatRoom(10, 10);
 
         // then
         verify(userChatRoomRepository, times(1)).delete(userChatRoom1);
