@@ -44,6 +44,7 @@ dependencies {
 	// spring security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// xml.bind 관련 에러 방지용
 	implementation 'com.sun.xml.bind:jaxb-impl:4.0.1'
