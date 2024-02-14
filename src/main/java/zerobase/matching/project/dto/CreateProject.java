@@ -14,6 +14,7 @@ import java.util.List;
 
 public class CreateProject {
 
+  @Builder
   @Getter
   public static class Request {
 

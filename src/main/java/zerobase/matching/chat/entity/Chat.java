@@ -17,7 +17,7 @@ public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CHAT_ID")
-    private Long chatId;
+    private int chatId;
 
     // 채팅 내용
     // Text는 어떤 자료형이어야하는가

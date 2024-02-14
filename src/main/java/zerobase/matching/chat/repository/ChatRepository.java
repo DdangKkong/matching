@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import zerobase.matching.chat.entity.Chat;
 
 
-public interface ChatRepository extends JpaRepository<Chat, Long> {
+public interface ChatRepository extends JpaRepository<Chat, Integer> {
 }

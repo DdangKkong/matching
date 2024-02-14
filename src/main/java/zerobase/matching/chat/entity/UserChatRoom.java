@@ -16,7 +16,7 @@ public class UserChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_CHATROOM_ID")
-    private Long userChatRoomId;
+    private int userChatRoomId;
 
     // 둘 다 단방향 설계
 
