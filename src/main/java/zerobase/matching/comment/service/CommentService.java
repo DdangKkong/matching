@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import zerobase.matching.announcement.service.AnnouncementService;
 import zerobase.matching.comment.domain.Comment;
 import zerobase.matching.comment.dto.CommentDto;
 import zerobase.matching.comment.dto.CreateComment;
@@ -26,18 +27,23 @@ public class CommentService {
 
   private final UserRepository userRepository;
 
+  private final AnnouncementService announcementService;
+
   // 댓글 작성
   public CommentDto createComment(CreateComment.Request request) {
     Project project = getProject(request.getProjectId());
     UserEntity user = getUser(request.getUserId());
 
-    return CommentDto.fromEntity(commentRepository.save(
+    Comment comment = commentRepository.save(
         Comment.builder()
             .project(project).user(user)
             .content(request.getContent())
             .level(0) // level 은 0 부터 시작
-            .build()
-    ));
+            .build());
+
+    announcementService.announceComment(request.getProjectId());
+
+    return CommentDto.fromEntity(comment);
   }
 
   // 대댓글 작성

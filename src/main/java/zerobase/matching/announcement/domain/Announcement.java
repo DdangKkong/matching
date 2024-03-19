@@ -15,5 +15,4 @@ public class Announcement {
   private int id;
 
 
-
 }

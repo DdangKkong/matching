@@ -1,12 +1,15 @@
 package zerobase.matching.announcement.service;
 
 import java.io.IOException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import zerobase.matching.announcement.controller.AnnouncementController;
 import zerobase.matching.project.domain.Project;
 import zerobase.matching.project.repository.ProjectRepository;
+import zerobase.matching.user.exception.AppException;
+import zerobase.matching.user.exception.ErrorCode;
 import zerobase.matching.user.persist.UserRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
 
@@ -16,7 +19,7 @@ public class AnnouncementService {
   private final UserRepository userRepository;
   private final ProjectRepository projectRepository;
 
-  // 클라이언트에서 서버의 이벤트를 구독하기 위한 요청을 보냄, user 가 생성될 때 실행하면 될 듯 하다
+  // 클라이언트에서 서버의 이벤트를 구독하기 위한 요청을 보냄
   public SseEmitter subscribe(int userId) {
 
     // 객체 생성
@@ -41,24 +44,25 @@ public class AnnouncementService {
   }
 
   // 채팅 알림 - 채팅에 초대된 회원에게
-  public void chatAnnounce (String phoneNumber){
+  public void chatAnnounce (int userId){
 
-    UserEntity user = userRepository.findByPhoneNumber(phoneNumber);
+    UserEntity user = userRepository.findByUserId(userId)
+        .orElseThrow(() -> new AppException(ErrorCode.USERID_INVALID));
 
-    int userId = user.getUserId();
+    int receiverId = user.getUserId();
 
-    if (AnnouncementController.sseEmitterMap.containsKey(userId)) {
-      SseEmitter sseEmitterChat = AnnouncementController.sseEmitterMap.get(userId);
+    if (AnnouncementController.sseEmitterMap.containsKey(receiverId)) {
+      SseEmitter sseEmitterChat = AnnouncementController.sseEmitterMap.get(receiverId);
       // 알림 메세지 전송 및 종료
       try {
         sseEmitterChat.send(SseEmitter.event().name("inviteChat").data("새로운 채팅이 있습니다."));
       } catch (Exception e) {
-        AnnouncementController.sseEmitterMap.remove(userId);
+        AnnouncementController.sseEmitterMap.remove(receiverId);
       }
     }
   }
 
-  // 댓글 알림 - 게시글 및 댓글 작성자에게
+  // 댓글 알림 - 게시글 작성자에게
   public void announceComment(int projectId){
     Project project = projectRepository.findById(projectId)
         .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));

@@ -1,5 +1,6 @@
 package zerobase.matching.chat.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import zerobase.matching.announcement.service.AnnouncementService;
 import zerobase.matching.chat.entity.ChatRoom;
 import zerobase.matching.chat.entity.UserChatRoom;
 import zerobase.matching.chat.dto.ChatDto;
@@ -32,6 +34,7 @@ public class ChatController {
     private final ChatService chatService;
     private final ChatRoomService chatRoomService;
     private final UserService userService;
+    private final AnnouncementService announcementService;
 // test
 //    @EventListener
 //    public void handleWebSocketConnectListner(SessionConnectEvent event){
@@ -64,11 +67,21 @@ public class ChatController {
         // 채팅 저장
         chatService.createChat(userChatRoom, chatRoom, sender, chatDto);
 
+        // 채팅방에 있는 회원들에게 알림 발송
+        List<Integer> userIdList = chatRoomService.findUserIdList(userChatRoom.getUserChatRoomId());
+        int listNum = userIdList.size();
+        for (int i = 0; i < listNum - 1; i++) {
+            int receiverId = userIdList.get(i);
+            announcementService.chatAnnounce(receiverId);
+        }
+
         // /chat/message 로 받은 경로에서
         // /topic/chat/room/{chatroomId} 경로로 변경해준다.
         sendingOperations.convertAndSend(
                 "/sub/chat/room/" + chatDto.getRoomId(),
                 chatDto);
+
+
     }
 
 

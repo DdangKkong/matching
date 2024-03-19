@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import zerobase.matching.announcement.service.AnnouncementService;
 import zerobase.matching.security.JwtUtil;
 import zerobase.matching.user.aop.AuthAspect;
 import zerobase.matching.user.dto.SignIn.Request;
@@ -24,6 +25,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final AuthAspect authAspect;
+  private final AnnouncementService announcementService;
 
   /**시크릿 키*/
   @Value("${jwt.token.secretKey}")

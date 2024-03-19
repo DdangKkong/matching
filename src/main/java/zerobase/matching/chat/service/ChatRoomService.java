@@ -1,5 +1,6 @@
 package zerobase.matching.chat.service;
 
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zerobase.matching.chat.entity.ChatRoom;
@@ -72,6 +73,15 @@ private final UserChatRoomRepository userChatRoomRepository;
 //                () -> new RuntimeException("UserChatRoom doesn't exist")
 //        );
 //    }
+
+    public List<Integer> findUserIdList(int chatRoomId) {
+        ChatRoom chatRoom = findChatRoom(chatRoomId);
+        List<UserChatRoom> allByChatRoom = userChatRoomRepository.findAllByChatRoom(chatRoom);
+
+        return allByChatRoom.stream()
+            .map(userChatRoom -> userChatRoom.getUser().getUserId())
+            .collect(Collectors.toList());
+    }
 
     public UserChatRoom findUserChatRoom(int chatRoomId, int userId){
         return userChatRoomRepository.findByUserIdAndChatRoomId(userId, chatRoomId).orElseThrow(
