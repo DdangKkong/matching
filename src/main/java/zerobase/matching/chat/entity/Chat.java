@@ -5,6 +5,7 @@ import lombok.*;
 import zerobase.matching.chat.type.ChatType;
 
 import java.sql.Timestamp;
+import zerobase.matching.user.persist.entity.UserEntity;
 
 @Entity
 @Table(name = "CHAT")
@@ -35,5 +36,13 @@ public class Chat {
     @Enumerated(EnumType.STRING)
     @Column(name = "CHAT_TYPE")
     private ChatType chatType;
+
+    @ManyToOne
+    @JoinColumn(name = "CHATROOM_ID")
+    private ChatRoom chatRoom;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private UserEntity user;
 
 }

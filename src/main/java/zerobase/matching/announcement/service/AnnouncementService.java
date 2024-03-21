@@ -43,7 +43,7 @@ public class AnnouncementService {
     return sseEmitter;
   }
 
-  // 채팅 알림 - 채팅에 초대된 회원에게
+  // 채팅 알림 - 채팅방에 issue 가 있을 때
   public void chatAnnounce (int userId){
 
     UserEntity user = userRepository.findByUserId(userId)

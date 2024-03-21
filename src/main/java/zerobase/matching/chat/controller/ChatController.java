@@ -62,17 +62,20 @@ public class ChatController {
             chatDto.setChatContext(chatDto.getUserId() + "님이 퇴장하였습니다.");
         }
 
-        UserChatRoom userChatRoom = chatRoomService.findUserChatRoom(chatDto.getRoomId(),
+        UserChatRoom userChatRoom = chatRoomService.findUserChatRoom(chatDto.getSenderRoomId(),
                 chatDto.getUserId());
         // 채팅 저장
         chatService.createChat(userChatRoom, chatRoom, sender, chatDto);
 
         // 채팅방에 있는 회원들에게 알림 발송
-        List<Integer> userIdList = chatRoomService.findUserIdList(userChatRoom.getUserChatRoomId());
+        List<Integer> userIdList = chatRoomService.findUserIdList(chatDto.getRoomId());
         int listNum = userIdList.size();
         for (int i = 0; i < listNum - 1; i++) {
             int receiverId = userIdList.get(i);
-            announcementService.chatAnnounce(receiverId);
+            // 채팅방에는 본인도 있기 때문에 본인을 제외하고 알림 발송
+            if (receiverId != chatDto.getUserId()) {
+                announcementService.chatAnnounce(receiverId);
+            }
         }
 
         // /chat/message 로 받은 경로에서

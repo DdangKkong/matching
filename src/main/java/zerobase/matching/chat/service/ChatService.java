@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class ChatService {
     private final ChatRepository chatRepository;
 
-    public void createChat(UserChatRoom userChatRoom, ChatRoom chatRoom, UserEntity sender, ChatDto chatDto){
+    public void createChat(UserChatRoom userChatRoom,ChatRoom chatRoom, UserEntity sender, ChatDto chatDto){
 
         // 채팅 생성
         Chat chat = Chat.builder()
@@ -25,6 +25,8 @@ public class ChatService {
                 .userChatRoom(userChatRoom)
                 .chatContext(chatDto.getChatContext())
                 .chatType(chatDto.getChatType())
+                .chatRoom(chatRoom)
+                .user(sender)
                 .build();
 
         // 채팅 저장

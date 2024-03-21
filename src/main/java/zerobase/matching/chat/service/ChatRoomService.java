@@ -1,10 +1,13 @@
 package zerobase.matching.chat.service;
 
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zerobase.matching.chat.entity.Chat;
 import zerobase.matching.chat.entity.ChatRoom;
 import zerobase.matching.chat.entity.UserChatRoom;
+import zerobase.matching.chat.repository.ChatRepository;
 import zerobase.matching.chat.repository.ChatRoomRepository;
 import zerobase.matching.chat.repository.UserChatRoomRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
@@ -15,16 +18,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ChatRoomService {
 
 private final ChatRoomRepository chatRoomRepository;
 private final UserChatRoomRepository userChatRoomRepository;
-
-    @Autowired
-    public ChatRoomService(ChatRoomRepository chatRoomRepository, UserChatRoomRepository userChatRoomRepository) {
-        this.chatRoomRepository = chatRoomRepository;
-        this.userChatRoomRepository = userChatRoomRepository;
-    }
+private final ChatRepository chatRepository;
 
     public ChatRoom createChatRoom(String name){
         // 채팅방을 만든다.
@@ -74,12 +73,13 @@ private final UserChatRoomRepository userChatRoomRepository;
 //        );
 //    }
 
+    // 채팅 알림을 보내기 위해, 같은 채팅방 구독한 인원을 List 화 한다.
     public List<Integer> findUserIdList(int chatRoomId) {
         ChatRoom chatRoom = findChatRoom(chatRoomId);
-        List<UserChatRoom> allByChatRoom = userChatRoomRepository.findAllByChatRoom(chatRoom);
+        List<Chat> allByChatRoom = chatRepository.findAllByChatRoom(chatRoom);
 
         return allByChatRoom.stream()
-            .map(userChatRoom -> userChatRoom.getUser().getUserId())
+            .map(Chat -> Chat.getUser().getUserId())
             .collect(Collectors.toList());
     }
 
