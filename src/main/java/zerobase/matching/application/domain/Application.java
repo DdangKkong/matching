@@ -36,11 +36,11 @@ public class Application {
 
   // 신청서 작성 일시
   @Column(name = "CREATED_AT")
-  private LocalDateTime createTime;
+  private LocalDateTime createdTime;
 
   // 신청서 수정 일시
   @Column(name = "UPDATED_AT")
-  private LocalDateTime updateTime;
+  private LocalDateTime updatedTime;
 
   // 신청서 지원 일시
   @Column(name = "APPLY_AT")
@@ -48,7 +48,7 @@ public class Application {
 
   // 신청서 삭제 일시
   @Column(name = "DELETED_AT")
-  private LocalDateTime deleteTime;
+  private LocalDateTime deletedTime;
 
   @Column(name = "DEPARTMENT")
   @Enumerated(EnumType.STRING) // 값을 그대로 database 에 저장 { 없으면 숫자(상수)로 저장됨 }

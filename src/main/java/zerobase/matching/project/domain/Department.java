@@ -4,5 +4,5 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum Department {
-    frontend, backend, fullstack, deleted;
+    frontend, backend, fullstack;
 }

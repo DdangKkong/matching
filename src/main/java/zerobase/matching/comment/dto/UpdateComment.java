@@ -25,9 +25,9 @@ public class UpdateComment {
     private int projectId;
     private int userId;
     private String content;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
-    private LocalDateTime deleteTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
+    private LocalDateTime deletedTime;
     private int parentId;
     private int level;
 
@@ -37,9 +37,9 @@ public class UpdateComment {
           .projectId(commentDto.getProjectId())
           .userId(commentDto.getUserId())
           .content(commentDto.getContent())
-          .createTime(commentDto.getCreateTime())
-          .updateTime(commentDto.getUpdateTime())
-          .deleteTime(commentDto.getDeleteTime())
+          .createdTime(commentDto.getCreatedTime())
+          .updatedTime(commentDto.getUpdatedTime())
+          .deletedTime(commentDto.getDeletedTime())
           .parentId(commentDto.getParentId())
           .level(commentDto.getLevel())
           .build();

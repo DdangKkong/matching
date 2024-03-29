@@ -26,13 +26,13 @@ public class CommentDto {
   private String content;
 
   // 댓글 작성 일시
-  private LocalDateTime createTime;
+  private LocalDateTime createdTime;
 
   // 댓글 수정 일시
-  private LocalDateTime updateTime;
+  private LocalDateTime updatedTime;
 
   // 댓글 삭제 일시
-  private LocalDateTime deleteTime;
+  private LocalDateTime deletedTime;
 
   // 부모 댓글 고유번호
   private int parentId;
@@ -47,9 +47,9 @@ public class CommentDto {
         .projectId(comment.getProject().getProjectId())
         .userId(comment.getUser().getUserId())
         .content(comment.getContent())
-        .createTime(comment.getCreateTime())
-        .updateTime(comment.getUpdateTime())
-        .deleteTime(comment.getDeleteTime())
+        .createdTime(comment.getCreatedTime())
+        .updatedTime(comment.getUpdatedTime())
+        .deletedTime(comment.getDeletedTime())
         .parentId(comment.getParentId())
         .level(comment.getLevel())
         .build();

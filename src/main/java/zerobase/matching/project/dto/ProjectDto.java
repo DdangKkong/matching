@@ -35,13 +35,13 @@ public class ProjectDto {
   private String place;
 
   // 작성 일시
-  private LocalDateTime createTime;
+  private LocalDateTime createdTime;
 
   // 수정 일시
-  private LocalDateTime updateTime;
+  private LocalDateTime updatedTime;
 
   // 삭제 일시
-  private LocalDateTime deleteTime;
+  private LocalDateTime deletedTime;
 
   // 구인 마감 날짜
   private LocalDate dueDate;
@@ -62,9 +62,9 @@ public class ProjectDto {
         .content(projects.getContent())
         .projectOnOffline(projects.getProjectOnOffline().toString())
         .place(projects.getPlace())
-        .createTime(projects.getCreateTime())
-        .updateTime(projects.getUpdateTime())
-        .deleteTime(projects.getDeleteTime())
+        .createdTime(projects.getCreatedTime())
+        .updatedTime(projects.getUpdatedTime())
+        .deletedTime(projects.getDeletedTime())
         .dueDate(projects.getDueDate())
         .recruitmentNum(projects.getRecruitmentNum())
         .recruitmentList(recruitmentList)

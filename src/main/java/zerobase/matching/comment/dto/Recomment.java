@@ -24,7 +24,7 @@ public class Recomment {
     private int projectId;
     private int userId;
     private String content;
-    private LocalDateTime createTime;
+    private LocalDateTime createdTime;
     private int parentId;
     private int level;
 
@@ -34,7 +34,7 @@ public class Recomment {
           .projectId(commentDto.getProjectId())
           .userId(commentDto.getUserId())
           .content(commentDto.getContent())
-          .createTime(commentDto.getCreateTime())
+          .createdTime(commentDto.getCreatedTime())
           .parentId(commentDto.getParentId())
           .level(commentDto.getLevel())
           .build();

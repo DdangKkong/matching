@@ -1,8 +1,23 @@
 package zerobase.matching.user.persist.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
-import lombok.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,11 +25,6 @@ import zerobase.matching.user.persist.consist.Gender;
 import zerobase.matching.user.persist.consist.MembershipLevel;
 import zerobase.matching.user.persist.consist.OnOffline;
 import zerobase.matching.user.persist.consist.Role;
-
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -68,10 +78,10 @@ public class UserEntity implements UserDetails {
   private String portfolio;
 
   @Column(name = "REGISTER_TIME")
-  private Timestamp registerTime;
+  private LocalDateTime registerTime;
 
   @Column(name = "UPDATE_TIME")
-  private Timestamp updateTime;
+  private LocalDateTime updatedTime;
 
   @Column(name = "ROLE")
   @Enumerated(EnumType.STRING)
@@ -83,12 +93,6 @@ public class UserEntity implements UserDetails {
 
   @Column(name = "TEAM_LEVEL")
   private Double teamLevel;
-
-  @Column(name = "BANK")
-  private String bank;
-
-  @Column(name = "ACCOUNTNUMBER")
-  private String accountNumber;
 
   /** 유저의 권한 추출 (오버라이딩) */
   @Override

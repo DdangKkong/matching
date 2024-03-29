@@ -21,6 +21,7 @@ public enum ErrorCode {
   PASSWORD_NOT_CHECK(HttpStatus.CONFLICT, "USER-PASSWORD-006", "입력한 패스워드와 확인용 패스워드가 일치하지 않습니다."),
   EMAIL_DUPLICATED(HttpStatus.CONFLICT, "USER-EMAIL-001", "이미 존재하는 이메일입니다."),
   NICKNAME_DUPLICATED(HttpStatus.CONFLICT, "USER-NICKNAME-001", "이미 존재하는 닉네임입니다."),
+  USERID_INVALID(HttpStatus.CONFLICT, "USER-USERID-001", "알맞지 않은 유저 정보입니다."),
   ;
 
   private final HttpStatus httpStatus;
