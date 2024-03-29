@@ -1,4 +1,4 @@
-package zerobase.matching.announcement.Repository;
+package zerobase.matching.announcement.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
