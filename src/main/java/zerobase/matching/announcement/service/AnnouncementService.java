@@ -1,11 +1,13 @@
 package zerobase.matching.announcement.service;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import zerobase.matching.announcement.Repository.AnnouncementRepository;
 import zerobase.matching.announcement.controller.AnnouncementController;
+import zerobase.matching.announcement.domain.Announcement;
 import zerobase.matching.project.domain.Project;
 import zerobase.matching.project.repository.ProjectRepository;
 import zerobase.matching.user.exception.AppException;
@@ -18,6 +20,7 @@ import zerobase.matching.user.persist.entity.UserEntity;
 public class AnnouncementService {
   private final UserRepository userRepository;
   private final ProjectRepository projectRepository;
+  private final AnnouncementRepository announcementRepository;
 
   // 클라이언트에서 서버의 이벤트를 구독하기 위한 요청을 보냄
   public SseEmitter subscribe(int userId) {
@@ -43,7 +46,7 @@ public class AnnouncementService {
     return sseEmitter;
   }
 
-  // 채팅 알림 - 채팅방에 issue 가 있을 때
+  // 채팅 알림 - 채팅방에 issue 가 있을 때, 채팅방에 들어와 있는 회원에게
   public void chatAnnounce (int userId){
 
     UserEntity user = userRepository.findByUserId(userId)
@@ -59,6 +62,12 @@ public class AnnouncementService {
       } catch (Exception e) {
         AnnouncementController.sseEmitterMap.remove(receiverId);
       }
+      // 알림 저장
+      announcementRepository.save(Announcement.builder()
+          .content("새로운 채팅이 있습니다.")
+          .announcedTime(LocalDateTime.now())
+          .user(user)
+          .build());
     }
   }
 
@@ -78,6 +87,13 @@ public class AnnouncementService {
       } catch (Exception e) {
         AnnouncementController.sseEmitterMap.remove(userId);
       }
+      // 알림 저장
+      announcementRepository.save(Announcement.builder()
+            .content("댓글이 달렸습니다")
+            .announcedTime(LocalDateTime.now())
+            .user(project.getUser())
+            .build());
+
     }
   }
 

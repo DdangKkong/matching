@@ -2,8 +2,6 @@ package zerobase.matching.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -71,10 +69,6 @@ public class SignUp {
     @Enum(enumClass = MembershipLevel.class, ignoreCase = true)
     private String membershipLevel;
 
-    private String bank;
-
-    private String accountNumber;
-
     /** SignUp DTO 객체를 엔티티로 변환 */
     public UserEntity toEntity(){
       return UserEntity.builder()
@@ -89,13 +83,11 @@ public class SignUp {
           .residence(this.residence)
           .onOffline(OnOffline.valueOf(this.onOffline.toLowerCase()))
           .portfolio(this.portfolio)
-          .registerTime(Timestamp.valueOf(LocalDateTime.now()))
-          .updateTime(Timestamp.valueOf(LocalDateTime.now()))
+          .registerTime(LocalDateTime.now())
+          .updatedTime(LocalDateTime.now())
           .role(Role.valueOf(this.role.toLowerCase()))
           .membershipLevel(MembershipLevel.valueOf(this.membershipLevel.toLowerCase()))
           .teamLevel((double) 0)
-          .bank(this.bank)
-          .accountNumber(this.accountNumber)
           .build();
     }
   }
@@ -112,7 +104,7 @@ public class SignUp {
 
     private int userId;
 
-    private Timestamp registerTime;
+    private LocalDateTime registerTime;
     private String userLoginId;
     private String nickname;
     private String email;
@@ -125,8 +117,6 @@ public class SignUp {
     private String portfolio;
     private String role;
     private String membershipLevel;
-    private String bank;
-    private String accountNumber;
   }
 
 }

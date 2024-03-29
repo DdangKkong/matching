@@ -20,6 +20,7 @@ public class AnnouncementController {
   private final AnnouncementService announcementService;
   public static Map<Integer, SseEmitter> sseEmitterMap = new ConcurrentHashMap<>();
 
+  // 프론트에서 호출하여 사용
   @GetMapping
   public SseEmitter message(@AuthenticationPrincipal UserEntity user) {
     int userId = user.getUserId();

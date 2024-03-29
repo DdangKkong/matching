@@ -43,7 +43,7 @@ class ChatRoomServiceTest {
 
 //        ChatRoom chatRoom = ChatRoom.builder()
 //                .chatroomId(10)
-//                .chatRoomCreateDate(Timestamp.valueOf(LocalDateTime.now()))
+//                .chatRoomCreateDate(LocalDateTime.now())
 //                .title("chatroom1")
 //                .build();
 
@@ -62,7 +62,7 @@ class ChatRoomServiceTest {
         //given
         ChatRoom chatRoom = ChatRoom.builder()
             .chatroomId(10)
-            .chatRoomCreateDate(Timestamp.valueOf(LocalDateTime.now()))
+            .chatRoomCreateDate(LocalDateTime.now())
             .title("chatroom1")
             .build();
 
@@ -120,7 +120,7 @@ class ChatRoomServiceTest {
         // given
         ChatRoom chatRoom = ChatRoom.builder()
                 .chatroomId(10)
-                .chatRoomCreateDate(Timestamp.valueOf(LocalDateTime.now()))
+                .chatRoomCreateDate(LocalDateTime.now())
                 .title("chatroom1")
                 .build();
 

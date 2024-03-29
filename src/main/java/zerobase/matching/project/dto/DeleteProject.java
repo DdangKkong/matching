@@ -31,9 +31,9 @@ public class DeleteProject {
     private String content;
     private String projectOnOffline;
     private String place;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
-    private LocalDateTime deleteTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
+    private LocalDateTime deletedTime;
     private LocalDate dueDate;
     private int recruitmentNum;
     private List<RecruitmentDto> recruitmentDtos;
@@ -47,9 +47,9 @@ public class DeleteProject {
               .content(projectDto.getContent())
               .projectOnOffline(projectDto.getProjectOnOffline().toString())
               .place(projectDto.getPlace())
-              .createTime(projectDto.getCreateTime())
-              .updateTime(projectDto.getUpdateTime())
-              .deleteTime(projectDto.getDeleteTime())
+              .createdTime(projectDto.getCreatedTime())
+              .updatedTime(projectDto.getUpdatedTime())
+              .deletedTime(projectDto.getDeletedTime())
               .dueDate(projectDto.getDueDate())
               .recruitmentNum(projectDto.getRecruitmentNum())
               .build();

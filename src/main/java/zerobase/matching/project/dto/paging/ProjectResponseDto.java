@@ -38,10 +38,10 @@ public class ProjectResponseDto {
   private int currentRecruit;
 
   // 작성 일시
-  private LocalDateTime createTime;
+  private LocalDateTime createdTime;
 
   // 수정 일시
-  private LocalDateTime updateTime;
+  private LocalDateTime updatedTime;
 
   // 구인 마감 날짜
   private LocalDate dueDate;
@@ -57,7 +57,7 @@ public class ProjectResponseDto {
     private String projectOnOffline;
     private String place;
     private int numberOfRecruit;
-    private LocalDateTime createTime;
+    private LocalDateTime createdTime;
     private LocalDate dueDate;
     private int recruitmentNum;
 
@@ -69,7 +69,7 @@ public class ProjectResponseDto {
           .content(project.getContent())
           .projectOnOffline(project.getProjectOnOffline().toString())
           .place(project.getPlace())
-          .createTime(LocalDateTime.now())
+          .createdTime(LocalDateTime.now())
           .dueDate(project.getDueDate())
           .recruitmentNum(project.getRecruitmentNum())
           .build();

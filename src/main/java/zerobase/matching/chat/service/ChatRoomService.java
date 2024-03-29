@@ -30,7 +30,7 @@ private final ChatRepository chatRepository;
 
         // 채팅방 인스턴스 생성
         ChatRoom chatRoom = ChatRoom.builder()
-                .chatRoomCreateDate(Timestamp.valueOf(LocalDateTime.now()))
+                .chatRoomCreateDate(LocalDateTime.now())
                 .title(name)
                 .build();
 

@@ -244,7 +244,7 @@ public class RecruitmentService {
     currentNum++;
     recruitment.setCurrentNum(currentNum);
     recruitmentRepository.save(recruitment);
-    project.setUpdateTime(LocalDateTime.now());
+    project.setUpdatedTime(LocalDateTime.now());
     projectRepository.save(project);
 
     return RecruitmentDto.fromEntity(recruitment);
@@ -287,7 +287,7 @@ public class RecruitmentService {
     currentNum--;
     recruitment.setCurrentNum(currentNum);
     recruitmentRepository.save(recruitment);
-    project.setUpdateTime(LocalDateTime.now());
+    project.setUpdatedTime(LocalDateTime.now());
     projectRepository.save(project);
 
     return RecruitmentDto.fromEntity(recruitment);

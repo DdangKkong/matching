@@ -21,7 +21,7 @@ public class ChatService {
 
         // 채팅 생성
         Chat chat = Chat.builder()
-                .chatCreateDate(Timestamp.valueOf(LocalDateTime.now()))
+                .chatCreateDate(LocalDateTime.now())
                 .userChatRoom(userChatRoom)
                 .chatContext(chatDto.getChatContext())
                 .chatType(chatDto.getChatType())

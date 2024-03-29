@@ -89,7 +89,7 @@ public class ProjectControllerTest {
         ProjectDto response = ProjectDto.builder()
                         .projectId(project.getProjectId()).userId(user.getUserId())
                         .title("제목").content("내용").projectOnOffline(ProjectOnOffline.both.toString())
-                        .place("Incheon").createTime(LocalDateTime.now()).dueDate(LocalDate.of(2024,2,23))
+                        .place("Incheon").createdTime(LocalDateTime.now()).dueDate(LocalDate.of(2024,2,23))
                         .recruitmentNum(1).recruitmentList(recruitmentList)
                         .build();
 

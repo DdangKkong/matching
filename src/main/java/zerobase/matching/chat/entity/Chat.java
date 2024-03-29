@@ -1,10 +1,23 @@
 package zerobase.matching.chat.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import zerobase.matching.chat.type.ChatType;
-
-import java.sql.Timestamp;
 import zerobase.matching.user.persist.entity.UserEntity;
 
 @Entity
@@ -26,8 +39,8 @@ public class Chat {
     private String chatContext;
 
     // 채팅 등록 일자
-    @Column(name = "CHAT_AT")
-    private Timestamp chatCreateDate;
+    @Column(name = "CHAT_TIME")
+    private LocalDateTime chatCreateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_CHATROOM_ID")

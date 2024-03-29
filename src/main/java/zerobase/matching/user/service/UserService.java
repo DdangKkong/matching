@@ -98,8 +98,6 @@ public class UserService {
         .portfolio(result.getPortfolio())
         .role(result.getRole().toString())
         .membershipLevel(result.getMembershipLevel().toString())
-        .bank(result.getBank())
-        .accountNumber(result.getAccountNumber())
         .build();
   }
 

@@ -39,16 +39,16 @@ public class Project {
   private String place;
 
   // 작성 일시
-  @Column(name = "CREATE_TIME")
-  private LocalDateTime createTime;
+  @Column(name = "CREATED_TIME")
+  private LocalDateTime createdTime;
 
   // 수정 일시
-  @Column(name = "UPDATE_TIME")
-  private LocalDateTime updateTime;
+  @Column(name = "UPDATED_TIME")
+  private LocalDateTime updatedTime;
 
   // 삭제 일시
-  @Column(name = "DELETE_TIME")
-  private LocalDateTime deleteTime;
+  @Column(name = "DELETED_TIME")
+  private LocalDateTime deletedTime;
 
   // 구인 마감 날짜
   @Column(name = "DUE_DATE")
@@ -72,7 +72,7 @@ public class Project {
     project.setProjectOnOffline(ProjectOnOffline.valueOf(projectOnOffline));
     project.setPlace(place);
     project.setDueDate(dueDate);
-    project.setUpdateTime(LocalDateTime.now());
+    project.setUpdatedTime(LocalDateTime.now());
 
     return project;
   }
@@ -84,9 +84,9 @@ public class Project {
 //    project.setDepartment(Department.deleted);
     project.setPlace("deleted");
     project.setDueDate(null);
-    project.setCreateTime(null);
-    project.setUpdateTime(null);
-    project.setDeleteTime(LocalDateTime.now());
+    project.setCreatedTime(null);
+    project.setUpdatedTime(null);
+    project.setDeletedTime(LocalDateTime.now());
 
     return project;
   }

@@ -59,7 +59,7 @@ public class ProjectService {
             Project.builder()
                     .title(request.getTitle()).content(request.getContent()).projectOnOffline(request.getProjectOnOffline())
                     .place(request.getPlace()).user(user).dueDate(request.getDueDate())
-                    .createTime(LocalDateTime.now()).recruitmentNum(request.getRecruitmentNum())
+                    .createdTime(LocalDateTime.now()).recruitmentNum(request.getRecruitmentNum())
                     .build());
 
     int projectId = project.getProjectId();
