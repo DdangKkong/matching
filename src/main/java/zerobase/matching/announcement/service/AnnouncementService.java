@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import zerobase.matching.announcement.Repository.AnnouncementRepository;
+import zerobase.matching.announcement.repository.AnnouncementRepository;
 import zerobase.matching.announcement.controller.AnnouncementController;
 import zerobase.matching.announcement.domain.Announcement;
 import zerobase.matching.project.domain.Project;
