@@ -41,7 +41,7 @@ public class ApplicationService {
             .title(request.getTitle())
             .promotion(request.getPromotion())
             .details(request.getDetails())
-            .createTime(LocalDateTime.now())
+            .createdTime(LocalDateTime.now())
             .build()
     ));
   }
@@ -123,7 +123,7 @@ public class ApplicationService {
     application.setTitle(request.getTitle());
     application.setPromotion(request.getPromotion());
     application.setDetails(request.getDetails());
-    application.setUpdateTime(LocalDateTime.now());
+    application.setUpdatedTime(LocalDateTime.now());
 
     if (application.getApplyTime() == null) {return ApplicationDto.fromEntity(applicationRepository.save(application));}
     else { return ApplicationDto.fromEntityWithProjectId(applicationRepository.save(application));}

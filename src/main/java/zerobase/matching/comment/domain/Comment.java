@@ -37,15 +37,15 @@ public class Comment {
 
   // 댓글 작성 일시
   @Column(name = "CREATED_AT")
-  private LocalDateTime createTime;
+  private LocalDateTime createdTime;
 
   // 댓글 수정 일시
   @Column(name = "UPDATED_AT")
-  private LocalDateTime updateTime;
+  private LocalDateTime updatedTime;
 
   // 댓글 삭제 일시
   @Column(name = "DELETED_AT")
-  private LocalDateTime deleteTime;
+  private LocalDateTime deletedTime;
 
   // 부모 댓글 고유번호
   @Column(name = "PARENT_ID")

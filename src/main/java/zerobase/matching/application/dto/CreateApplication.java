@@ -35,9 +35,9 @@ public class CreateApplication {
     private String title;
     private String promotion;
     private String details;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
-    private LocalDateTime deleteTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
+    private LocalDateTime deletedTime;
     private LocalDateTime applyTime;
 
     public static CreateApplication.Response fromEntity(ApplicationDto applicationDto) {
@@ -49,9 +49,9 @@ public class CreateApplication {
           .title(applicationDto.getTitle())
           .promotion(applicationDto.getPromotion())
           .details(applicationDto.getDetails())
-          .createTime(applicationDto.getCreateTime())
-          .updateTime(applicationDto.getUpdateTime())
-          .deleteTime(applicationDto.getDeleteTime())
+          .createdTime(applicationDto.getCreatedTime())
+          .updatedTime(applicationDto.getUpdatedTime())
+          .deletedTime(applicationDto.getDeletedTime())
           .applyTime(applicationDto.getApplyTime())
           .build();
     }

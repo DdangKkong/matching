@@ -8,9 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
-import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
@@ -79,10 +78,10 @@ public class UserEntity implements UserDetails {
   private String portfolio;
 
   @Column(name = "REGISTER_TIME")
-  private Timestamp registerTime;
+  private LocalDateTime registerTime;
 
   @Column(name = "UPDATE_TIME")
-  private Timestamp updateTime;
+  private LocalDateTime updatedTime;
 
   @Column(name = "ROLE")
   @Enumerated(EnumType.STRING)
@@ -94,12 +93,6 @@ public class UserEntity implements UserDetails {
 
   @Column(name = "TEAM_LEVEL")
   private Double teamLevel;
-
-  @Column(name = "BANK")
-  private String bank;
-
-  @Column(name = "ACCOUNTNUMBER")
-  private String accountNumber;
 
   /** 유저의 권한 추출 (오버라이딩) */
   @Override

@@ -50,11 +50,16 @@ public class ProjectService {
   public ProjectDto createProject(CreateProject.Request request){
     UserEntity user = getUser(request.getUserId());
 
+    // dueDate 가 이미 지난 날짜라면 에러발생
+
+
+
+
     Project project = projectRepository.save(
             Project.builder()
                     .title(request.getTitle()).content(request.getContent()).projectOnOffline(request.getProjectOnOffline())
                     .place(request.getPlace()).user(user).dueDate(request.getDueDate())
-                    .createTime(LocalDateTime.now()).recruitmentNum(request.getRecruitmentNum())
+                    .createdTime(LocalDateTime.now()).recruitmentNum(request.getRecruitmentNum())
                     .build());
 
     int projectId = project.getProjectId();

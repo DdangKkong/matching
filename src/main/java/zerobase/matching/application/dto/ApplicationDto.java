@@ -36,16 +36,16 @@ public class ApplicationDto {
   private String details;
 
   // 신청서 작성 일시
-  private LocalDateTime createTime;
+  private LocalDateTime createdTime;
 
   // 신청서 수정 일시
-  private LocalDateTime updateTime;
+  private LocalDateTime updatedTime;
 
   // 신청서 지원 일시
   private LocalDateTime applyTime;
 
   // 신청서 삭제 일시
-  private LocalDateTime deleteTime;
+  private LocalDateTime deletedTime;
 
   public static ApplicationDto fromEntity(Application application) {
     return ApplicationDto.builder()
@@ -55,10 +55,10 @@ public class ApplicationDto {
         .title(application.getTitle())
         .promotion(application.getPromotion())
         .details(application.getDetails())
-        .createTime(application.getCreateTime())
-        .updateTime(application.getUpdateTime())
+        .createdTime(application.getCreatedTime())
+        .updatedTime(application.getUpdatedTime())
         .applyTime(application.getApplyTime())
-        .deleteTime(application.getDeleteTime())
+        .deletedTime(application.getDeletedTime())
         .build();
   }
 
@@ -71,10 +71,10 @@ public class ApplicationDto {
             .title(application.getTitle())
             .promotion(application.getPromotion())
             .details(application.getDetails())
-            .createTime(application.getCreateTime())
-            .updateTime(application.getUpdateTime())
+            .createdTime(application.getCreatedTime())
+            .updatedTime(application.getUpdatedTime())
             .applyTime(application.getApplyTime())
-            .deleteTime(application.getDeleteTime())
+            .deletedTime(application.getDeletedTime())
             .build();
   }
 

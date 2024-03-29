@@ -14,6 +14,7 @@ import java.util.List;
 
 public class CreateProject {
 
+  @Builder
   @Getter
   public static class Request {
 
@@ -62,7 +63,7 @@ public class CreateProject {
     private String content;
     private String projectOnOffline;
     private String place;
-    private LocalDateTime createTime;
+    private LocalDateTime createdTime;
     private LocalDate dueDate;
     private int recruitmentNum;
     private List<RecruitmentDto> recruitmentDtos;
@@ -77,7 +78,7 @@ public class CreateProject {
           .content(projectDto.getContent())
           .projectOnOffline(projectDto.getProjectOnOffline().toString())
           .place(projectDto.getPlace())
-          .createTime(projectDto.getCreateTime())
+          .createdTime(projectDto.getCreatedTime())
           .dueDate(projectDto.getDueDate())
           .recruitmentNum(projectDto.getRecruitmentNum())
           .build();
