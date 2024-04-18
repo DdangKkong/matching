@@ -13,11 +13,6 @@
 - 사용자들은 저희가 제공하는 개발자 매칭 커뮤니티를 통해 개발의 본질을 배우며,
 개인 프로젝트에서 경험하지 못했던 부분들을 채울 수 있습니다.
 
----
-
-## 💡 **핵심 기능**
-
-[1조 핵심 기능](https://www.notion.so/1-abe0c1c766554129a0542031994ca86b?pvs=21)
 
 ## **💪 기술 스펙 초안**
 <img src="https://img.shields.io/badge/java-007396?&logo=java&logoColor=white"> 
@@ -34,10 +29,8 @@
 
 ## **💪 ERD**
 
-[ERD](https://www.notion.so/ERD-897e8ce40b8543caa3d685e7686b730a?pvs=21)
+[ERD](https://www.notion.so/ERD-39ae0a84b7804fcebd9bc08970bc9745)
 
 ## **💪 API 명세서**
 
-[API 명세서](https://www.notion.so/API-03cd050d606142fc999d361c8995aae7?pvs=21)
-
-[2주차](https://www.notion.so/2-92743c24b6534be5a51fcf7a997b75a0?pvs=21)
+[API 명세서](https://www.notion.so/API-1cdb8feb84554b78ba36047e93d4266a)
