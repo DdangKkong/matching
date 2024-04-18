@@ -2,53 +2,30 @@ package zerobase.matching.chat.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.socket.messaging.SessionConnectEvent;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import zerobase.matching.announcement.service.AnnouncementService;
+import zerobase.matching.chat.dto.ChatDto;
 import zerobase.matching.chat.entity.ChatRoom;
 import zerobase.matching.chat.entity.UserChatRoom;
-import zerobase.matching.chat.dto.ChatDto;
-import zerobase.matching.chat.type.ChatType;
 import zerobase.matching.chat.service.ChatRoomService;
 import zerobase.matching.chat.service.ChatService;
+import zerobase.matching.chat.type.ChatType;
 import zerobase.matching.user.persist.entity.UserEntity;
 import zerobase.matching.user.service.UserService;
-
-import java.util.logging.SocketHandler;
 
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
-
-//    private static final Logger LOGGER = LoggerFactory.getLogger(SocketHandler.class);
 
     private final SimpMessageSendingOperations sendingOperations;
     private final ChatService chatService;
     private final ChatRoomService chatRoomService;
     private final UserService userService;
     private final AnnouncementService announcementService;
-// test
-//    @EventListener
-//    public void handleWebSocketConnectListner(SessionConnectEvent event){
-//        LOGGER.info("Received a new web socket connection");
-//    }
-//
-//    @EventListener
-//    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-//        StompHeaderAccessor headerAccesor = StompHeaderAccessor.wrap(event.getMessage());
-//        String sessionId = headerAccesor.getSessionId();
-//
-//        LOGGER.info("sessionId Disconnected : " + sessionId);
-//    }
-    @MessageMapping("/chat/message")
+
+    @MessageMapping("/maching/chat/message")
     public void sendChat(ChatDto chatDto){
 
         ChatRoom chatRoom = chatRoomService.findChatRoom(chatDto.getRoomId());
@@ -86,8 +63,5 @@ public class ChatController {
 
 
     }
-
-
-
 
 }

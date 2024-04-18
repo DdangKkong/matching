@@ -10,7 +10,7 @@ import zerobase.matching.announcement.controller.AnnouncementController;
 import zerobase.matching.announcement.domain.Announcement;
 import zerobase.matching.project.domain.Project;
 import zerobase.matching.project.repository.ProjectRepository;
-import zerobase.matching.user.exception.AppException;
+import zerobase.matching.user.exception.CustomException;
 import zerobase.matching.user.exception.ErrorCode;
 import zerobase.matching.user.persist.UserRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
@@ -50,7 +50,7 @@ public class AnnouncementService {
   public void chatAnnounce (int userId){
 
     UserEntity user = userRepository.findByUserId(userId)
-        .orElseThrow(() -> new AppException(ErrorCode.USERID_INVALID));
+        .orElseThrow(() -> new CustomException(ErrorCode.USERID_INVALID));
 
     int receiverId = user.getUserId();
 
@@ -96,6 +96,5 @@ public class AnnouncementService {
 
     }
   }
-
 
 }

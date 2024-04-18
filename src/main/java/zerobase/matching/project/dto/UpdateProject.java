@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import zerobase.matching.project.domain.Department;
 import zerobase.matching.project.recruitment.dto.RecruitmentDto;
 
@@ -64,6 +65,7 @@ public class UpdateProject {
     private String projectOnOffline;
     private String place;
     private LocalDateTime createdTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime updatedTime;
     private LocalDateTime deletedTime;
     private LocalDate dueDate;

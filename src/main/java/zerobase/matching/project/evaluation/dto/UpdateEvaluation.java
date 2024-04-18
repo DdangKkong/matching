@@ -1,5 +1,7 @@
 package zerobase.matching.project.evaluation.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,10 +11,11 @@ public class UpdateEvaluation {
     @Builder
     public static class Request {
 
+        @NotNull
         private int userId;
-
+        @NotNull
         private double score;
-
+        @NotBlank
         private String content;
 
     }

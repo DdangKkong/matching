@@ -1,5 +1,6 @@
 package zerobase.matching.application.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,13 +14,13 @@ public class UpdateApplication {
 
     @NotNull
     private int userId;
-
+    @NotBlank
     private String department;
-
+    @NotBlank
     private String title;
-
+    @NotBlank
     private String promotion;
-
+    @NotBlank
     private String details;
 
   }

@@ -16,9 +16,9 @@ public class CreateComment {
     private int userId;
     @NotNull
     private String content;
-
+    @NotNull
     private int parentId;
-
+    @NotNull
     private int level;
   }
 

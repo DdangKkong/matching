@@ -1,29 +1,24 @@
 ### 변경사항
 <!-- 이 PR에서 어떤점들이 변경되었는지 기술해주세요. 가급적이면 as-is, to-be를 활용해서 작성해주세요.  -->
 
-feat :  announcement (알림) 구현 완료.
+feat :  수정 및 업데이트
 
-알림 기능 설명 : 알림은 두가지 경우 발송된다.
-(1) 채팅 알림 : 본인이 구독(참여)한 채팅방에서 타 회원의 참여, 메세지 발송, 방 나감 등의 issue 발생 시 알림 메세지 발송
-(2) 댓글 알림 : 본인의 게시글에 댓글이 달렸을 때 알림 메세지 발송
+- 상세 내용 : 
+  - 모든 dto @NotNull, @NotBlank 추가 및 service 에 @Transactional 추가
+  - Controller 에서 Request 받는 형태 일원화 및 GetMapping, DeleteMapping 시 parameter 로 데이터 받아오도록 수정
+  - URL 연관성 기준으로 정리
+  - CustomException 적용하여 Errorcode 통합 관리
  
 refactor :
-(1) 알림 발송을 위해 채팅과 댓글 작성 코드에 알림 메세지 발송 코드 추가
-(2) 기존 채팅에서 1:1 채팅시 한명은 메세지가 정상적으로 발송되지만 다른 한명은 메세지 발송시 에러 발생하는 현상 발견, 
-ChatController, Dto, Chat(Entity), Repository, Service(Chat, ChatRoom) 수정하여 에러 해결.
+
 
 **AS-IS**
 
-announcement (알림) 구현 완료.
-
-database 올바르게 작동하는지 확인 완료.
-
-api 테스트 완료
-채팅은 https://jxy.me/websocket-debug-tool/ 사용하여 테스트.
+수정 및 업데이트
 
 **TO-BE**
 
-미흡한 부분 확인하여 추가할 예정.
+미흡한 부분 확인 되는대로 추가할 예정.
 
 ### 테스트
 <!-- 본 변경사항이 테스트가 되었는지 기술해주세요 --> 

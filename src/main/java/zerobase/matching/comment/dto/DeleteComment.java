@@ -1,20 +1,10 @@
 package zerobase.matching.comment.dto;
 
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
 public class DeleteComment {
-
-  @Getter
-  public static class Request {
-
-    @NotNull
-    private int userId;
-
-  }
-
   @Builder
   @Getter
   public static class Response {

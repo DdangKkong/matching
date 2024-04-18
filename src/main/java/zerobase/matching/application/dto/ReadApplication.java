@@ -1,22 +1,10 @@
 package zerobase.matching.application.dto;
 
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 public class ReadApplication {
-
-  @Getter
-  public static class Request {
-
-    @NotNull
-    private int applicationId;
-    @NotNull
-    private int userId;
-
-  }
 
   @Builder
   @Getter

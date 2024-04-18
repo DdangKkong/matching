@@ -1,5 +1,6 @@
 package zerobase.matching.project.recruitment.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import zerobase.matching.project.domain.Project;
@@ -14,6 +15,8 @@ import zerobase.matching.project.repository.ProjectRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import zerobase.matching.user.exception.CustomException;
+import zerobase.matching.user.exception.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -89,6 +92,7 @@ public class RecruitmentService {
 
   // 모집 현황 수정
     // 모집 현황 1개일 때
+  @Transactional
   public List<Recruitment> updateRecruitmentOne(UpdateProject.Request request) {
 
     Project project = getProject(request.getProjectId());
@@ -101,7 +105,7 @@ public class RecruitmentService {
 
     // 수정된 모집인원이 현재 모집된 인원보다 적은경우 에러
     if (request.getTotalNumOne() < recruitment1.getCurrentNum()) {
-      throw new RuntimeException("모집인원이 모집된 인원보다 적습니다");
+      throw new CustomException(ErrorCode.RECRUITMENT_NUMBER_INVALID);
     }
 
     recruitmentList.clear();
@@ -113,6 +117,7 @@ public class RecruitmentService {
 
   }
   // 모집 현황 2개일 때
+  @Transactional
   public List<Recruitment> updateRecruitmentTwo(UpdateProject.Request request) {
 
     Project project = getProject(request.getProjectId());
@@ -126,7 +131,7 @@ public class RecruitmentService {
     // 수정된 모집인원이 현재 모집된 인원보다 적은경우 에러
     if (request.getTotalNumOne() < recruitment1.getCurrentNum()
         || request.getTotalNumTwo() < recruitment2.getCurrentNum()) {
-      throw new RuntimeException("모집인원이 모집된 인원보다 적습니다");
+      throw new CustomException(ErrorCode.RECRUITMENT_NUMBER_INVALID);
     }
 
     recruitmentList.clear();
@@ -141,6 +146,7 @@ public class RecruitmentService {
 
   }
   // 모집 현황 3개일 때
+  @Transactional
   public List<Recruitment> updateRecruitmentThr(UpdateProject.Request request) {
 
     Project project = getProject(request.getProjectId());
@@ -156,7 +162,7 @@ public class RecruitmentService {
     if (request.getTotalNumOne() < recruitment1.getCurrentNum()
         || request.getTotalNumTwo() < recruitment2.getCurrentNum()
         || request.getTotalNumThr() < recruitment3.getCurrentNum()) {
-      throw new RuntimeException("모집인원이 모집된 인원보다 적습니다");
+      throw new CustomException(ErrorCode.RECRUITMENT_NUMBER_INVALID);
     }
 
     recruitmentList.clear();
@@ -176,6 +182,7 @@ public class RecruitmentService {
 
   // 모집 현황 삭제
     // 모집 현황 1개일 때
+  @Transactional
   public List<Recruitment> DeleteRecruitmentOne(List<Recruitment> recruitmentList, List<MappingProjectRecruit> List){
     mappingRepository.delete(List.get(0));
     Recruitment recruitment1 = recruitmentList.get(0);
@@ -184,6 +191,7 @@ public class RecruitmentService {
     return recruitmentList;
   }
   // 모집 현황 2개일 때
+  @Transactional
   public List<Recruitment> DeleteRecruitmentTwo(List<Recruitment> recruitmentList, List<MappingProjectRecruit> List){
     mappingRepository.delete(List.get(0));
     mappingRepository.delete(List.get(1));
@@ -195,13 +203,14 @@ public class RecruitmentService {
     return recruitmentList;
   }
   // 모집 현황 3개일 때
+  @Transactional
   public List<Recruitment> DeleteRecruitmentThr(List<Recruitment> recruitmentList, List<MappingProjectRecruit> List){
     mappingRepository.delete(List.get(0));
     mappingRepository.delete(List.get(1));
     mappingRepository.delete(List.get(2));
     Recruitment recruitment1 = recruitmentList.get(0);
     Recruitment recruitment2 = recruitmentList.get(1);
-    Recruitment recruitment3 = recruitmentList.get(3);
+    Recruitment recruitment3 = recruitmentList.get(2);
     recruitmentRepository.delete(recruitment1);
     recruitmentRepository.delete(recruitment2);
     recruitmentRepository.delete(recruitment3);
@@ -210,6 +219,7 @@ public class RecruitmentService {
   }
 
   // 모집 인원에서 현재 인원 추가 ( 구인 게시글에서 팀원을 뽑았을 때 )
+  @Transactional
   public RecruitmentDto plusMember(PlusMember.Request request) {
     Project project = getProject(request.getProjectId());
     List<MappingProjectRecruit> List = mappingRepository.findAllByProjectProjectId(request.getProjectId());
@@ -231,14 +241,14 @@ public class RecruitmentService {
 
     // department 가 일치하는 모집 현황이 없으면 에러 발생
     if (indexNum == -1) {
-      throw new RuntimeException("해당 구인 글에서 일치하는 모집군이 없습니다.");
+      throw new CustomException(ErrorCode.DEPARTMENT_NOT_MATCH);
     }
 
     int currentNum = recruitment.getCurrentNum();
 
     // 현재 인원이 모집하려는 총 인원보다 많을 수 없음
     if (recruitment.getTotalNum() == currentNum) {
-      throw new RuntimeException("모집 인원이 이미 다 찼습니다.");
+      throw new CustomException(ErrorCode.RECRUITMENT_NUMBER_EXCEED);
     }
 
     currentNum++;
@@ -252,6 +262,7 @@ public class RecruitmentService {
   }
 
   // 모집 인원에서 현재 인원 빼기 ( 구인 게시글에서 팀원 뽑은것을 취소할 때 )
+  @Transactional
   public RecruitmentDto MinusMember(MinusMember.Request request) {
     Project project = getProject(request.getProjectId());
 //    List<Integer> recruitmentIdList = mappingRepository.findAllByProjectProjectId(request.getProjectId());
@@ -274,14 +285,14 @@ public class RecruitmentService {
 
     // department 가 일치하는 모집 현황이 없으면 에러 발생
     if (indexNum == -1) {
-      throw new RuntimeException("해당 구인 글에서 일치하는 모집군이 없습니다.");
+      throw new CustomException(ErrorCode.DEPARTMENT_NOT_MATCH);
     }
 
     int currentNum = recruitment.getCurrentNum();
 
     // 현재 인원이 0 보다 작을 수 없음
     if (currentNum == 0) {
-      throw new RuntimeException("모집 인원은 음수가 될 수 없습니다.");
+      throw new CustomException(ErrorCode.RECRUITMENT_NUMBER_NOT_MINUS);
     }
 
     currentNum--;
@@ -324,12 +335,12 @@ public class RecruitmentService {
 
   private Project getProject(int projectId) {
     return projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("프로젝트 구인 글의 정보가 알맞지 않습니다."));
+        .orElseThrow(() -> new CustomException(ErrorCode.PROJECTID_INVALID));
   }
 
   private Recruitment getRecruitment(int recruitmentId) {
     return recruitmentRepository.findById(recruitmentId)
-            .orElseThrow(() -> new RuntimeException("모집 현황이 없습니다."));
+            .orElseThrow(() -> new CustomException(ErrorCode.RECRUITMENTID_INVALID));
   }
 
 }

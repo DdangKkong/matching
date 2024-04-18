@@ -1,5 +1,6 @@
 package zerobase.matching.application.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,8 @@ import zerobase.matching.application.repository.ApplicationRepository;
 import zerobase.matching.project.domain.Department;
 import zerobase.matching.project.domain.Project;
 import zerobase.matching.project.repository.ProjectRepository;
+import zerobase.matching.user.exception.CustomException;
+import zerobase.matching.user.exception.ErrorCode;
 import zerobase.matching.user.persist.UserRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
 
@@ -47,6 +50,7 @@ public class ApplicationService {
   }
 
   // 신청서 제출
+  @Transactional
   public ApplicationDto sendApplication(int projectId, SendApplication.Request request) {
     Project project = getProject(projectId);
     Application application = getApplication(request.getApplicationId());
@@ -55,8 +59,7 @@ public class ApplicationService {
 
     // 작성자가 아닌 경우 신청서 제출 불가
     if (!Objects.equals(writerId, request.getUserId())) {
-      throw new RuntimeException(
-              user.getNickname() + "님은 해당 신청서의 작성자가 아닙니다.");
+      throw new CustomException(ErrorCode.USERID_INVALID);
     }
 
     application.setApplyTime(LocalDateTime.now());
@@ -66,6 +69,7 @@ public class ApplicationService {
   }
 
   // 신청서 회수 ( Project 를 null 값으로 )
+  @Transactional
   public ApplicationDto retrieveApplication(RetrieveApplication.Request request) {
     Application application = getApplication(request.getApplicationId());
     UserEntity user = getUser(request.getUserId());
@@ -73,15 +77,14 @@ public class ApplicationService {
 
     // 작성자가 아닌 경우 신청서 회수 불가
     if (!Objects.equals(writerId, request.getUserId())) {
-      throw new RuntimeException(
-              user.getNickname() + "님은 해당 신청서의 작성자가 아닙니다.");
+      throw new CustomException(ErrorCode.USERID_INVALID);
     }
 
     int sendProjectId = application.getProject().getProjectId();
 
     // 신청서 제출 여부 확인 ( projectId 일치 여부 확인 )
     if (!Objects.equals(sendProjectId, request.getProjectId())) {
-      throw new RuntimeException("해당 게시글에 제출한 신청서가 없습니다.");
+      throw new CustomException(ErrorCode.APPLICATIONID_INVALID);
     }
 
     application.setProject(null);
@@ -91,15 +94,14 @@ public class ApplicationService {
   }
 
   // 신청서 읽기
-  public ApplicationDto readApplication(int applicationId, ReadApplication.Request request) {
+  public ApplicationDto readApplication(int applicationId, int userId) {
     Application application = getApplication(applicationId);
-    UserEntity user = getUser(request.getUserId());
+    UserEntity user = getUser(userId);
     int writerId = application.getUser().getUserId();
 
     // 작성자가 아닌 경우 신청서 읽기 불가
-    if (!Objects.equals(writerId, request.getUserId())) {
-      throw new RuntimeException(
-              user.getNickname() + "님은 해당 신청서의 작성자가 아닙니다.");
+    if (!Objects.equals(writerId, userId)) {
+      throw new CustomException(ErrorCode.USERID_INVALID);
     }
 
     if (application.getApplyTime() == null) {return ApplicationDto.fromEntity(application);}
@@ -108,6 +110,7 @@ public class ApplicationService {
   }
 
   // 신청서 수정
+  @Transactional
   public ApplicationDto updateApplication(int applicationId, UpdateApplication.Request request) {
     Application application = getApplication(applicationId);
     UserEntity user = getUser(request.getUserId());
@@ -115,8 +118,7 @@ public class ApplicationService {
 
     // 작성자가 아닌 경우 신청서 수정 불가
     if (!Objects.equals(writerId, request.getUserId())) {
-      throw new RuntimeException(
-              user.getNickname() + "님은 해당 신청서의 작성자가 아닙니다.");
+      throw new CustomException(ErrorCode.USERID_INVALID);
     }
 
     application.setDepartment(Department.valueOf(request.getDepartment()));
@@ -131,20 +133,20 @@ public class ApplicationService {
   }
 
   // 신청서 삭제
-  public void deleteApplication(int applicationId, DeleteApplication.Request request) {
+  @Transactional
+  public void deleteApplication(int applicationId, int userId) {
     Application application = getApplication(applicationId);
-    UserEntity user = getUser(request.getUserId());
+    UserEntity user = getUser(userId);
     int writerId = application.getUser().getUserId();
 
     // 작성자가 아닌 경우 신청서 삭제 불가
-    if (!Objects.equals(writerId, request.getUserId())) {
-      throw new RuntimeException(
-              user.getNickname() + "님은 해당 신청서의 작성자가 아닙니다.");
+    if (!Objects.equals(writerId, userId)) {
+      throw new CustomException(ErrorCode.USERID_INVALID);
     }
 
     // 신청서를 제출한 경우 삭제 불가
     if (application.getApplyTime() != null) {
-      throw new RuntimeException("제출된 신청서는 삭제할 수 없습니다.");
+      throw new CustomException(ErrorCode.APPLICATIONID_INVALID);
     }
 
     applicationRepository.delete(application);
@@ -170,17 +172,17 @@ public class ApplicationService {
 
   private UserEntity getUser(int userId) {
     return userRepository.findById(userId)
-        .orElseThrow(() -> new RuntimeException("회원 정보가 알맞지 않습니다."));
+        .orElseThrow(() -> new CustomException(ErrorCode.USERID_INVALID));
   }
 
   private Project getProject(int projectId) {
     return projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("프로젝트 구인 글의 정보가 알맞지 않습니다."));
+        .orElseThrow(() -> new CustomException(ErrorCode.PROJECTID_INVALID));
   }
 
   private Application getApplication(int applicationId) {
     return applicationRepository.findById(applicationId)
-            .orElseThrow(() -> new RuntimeException("신청서의 정보가 알맞지 않습니다."));
+            .orElseThrow(() -> new CustomException(ErrorCode.APPLICATIONID_INVALID));
   }
 
 }
