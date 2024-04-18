@@ -1,15 +1,17 @@
 package zerobase.matching.project.evaluation.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
 public class ReadEvaluationAboutMe {
 
     @Getter
-//    @Builder
     public static class Request {
 
+        @NotNull
         private int evaluationId;
+        @NotNull
         private int evaluatedUserId;
 
     }

@@ -1,24 +1,14 @@
 package zerobase.matching.project.dto;
 
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import zerobase.matching.project.recruitment.dto.RecruitmentDto;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
 public class DeleteProject {
-
-  @Getter
-  public static class Request {
-
-    @NotNull
-    private int userId;
-
-  }
 
   @Builder
   @Getter

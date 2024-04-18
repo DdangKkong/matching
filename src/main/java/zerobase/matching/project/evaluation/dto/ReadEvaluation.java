@@ -1,20 +1,9 @@
 package zerobase.matching.project.evaluation.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 public class ReadEvaluation {
-
-    @Getter
-    @Setter
-//    @Builder 빌더가 있으면 400 (Bad request) 뜬다, 아마 userId 라는 객체를 생성 못하는듯 하다
-    public static class Request {
-
-        private int userId;
-
-    }
 
     @Builder
     @Getter

@@ -21,8 +21,6 @@ public class MappingDto {
   // 모집현황 id
   private int recruitmentId;
 
-
-
   public static MappingDto fromEntity(MappingProjectRecruit mappingProjectRecruit) {
     return MappingDto.builder()
                     .mappingId(mappingProjectRecruit.getMappingId())

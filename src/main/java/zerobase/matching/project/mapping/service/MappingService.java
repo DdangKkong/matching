@@ -8,6 +8,8 @@ import zerobase.matching.project.mapping.repository.MappingRepository;
 import zerobase.matching.project.recruitment.domain.Recruitment;
 import zerobase.matching.project.recruitment.repository.RecruitmentRepository;
 import zerobase.matching.project.repository.ProjectRepository;
+import zerobase.matching.user.exception.CustomException;
+import zerobase.matching.user.exception.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class MappingService {
 
   private final MappingRepository mappingRepository;
 
+  // 매핑 하기
   public void createMapping(int projectId, int recruitmentId){
     Project project = getProject(projectId);
     Recruitment recruitment = getRecruitment(recruitmentId);
@@ -33,12 +36,12 @@ public class MappingService {
 
   private Project getProject(int projectId) {
     return projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("프로젝트 구인 글의 정보가 알맞지 않습니다."));
+        .orElseThrow(() -> new CustomException(ErrorCode.PROJECTID_INVALID));
   }
 
   private Recruitment getRecruitment(int recruitmentId) {
     return recruitmentRepository.findById(recruitmentId)
-            .orElseThrow(() -> new RuntimeException("모집현황의 정보가 알맞지 않습니다."));
+            .orElseThrow(() -> new CustomException(ErrorCode.RECRUITMENTID_INVALID));
   }
 
 }

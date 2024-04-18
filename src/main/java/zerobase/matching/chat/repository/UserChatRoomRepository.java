@@ -17,8 +17,6 @@ public interface UserChatRoomRepository extends JpaRepository<UserChatRoom, Inte
     @Query("select uc from UserChatRoom uc where uc.user.userId = :userId")
     List<UserChatRoom> findAllByUserId(@Param("userId") int userId);
 
-
     List<UserChatRoom> findAllByChatRoom(ChatRoom chatRoom);
 
-//    Optional<UserChatRoom> findByUserChatRoomId(Long userChatRoomId);
 }

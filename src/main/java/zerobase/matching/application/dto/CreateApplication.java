@@ -1,5 +1,6 @@
 package zerobase.matching.application.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,13 +14,13 @@ public class CreateApplication {
 
     @NotNull
     private int userId;
-
+    @NotBlank
     private String department;
-
+    @NotBlank
     private String title;
-
+    @NotBlank
     private String promotion;
-
+    @NotBlank
     private String details;
 
   }
@@ -30,7 +31,6 @@ public class CreateApplication {
 
     private int applicationId;
     private int userId;
-    private int projectId;
     private String department;
     private String title;
     private String promotion;
@@ -44,7 +44,6 @@ public class CreateApplication {
       return CreateApplication.Response.builder()
           .applicationId(applicationDto.getApplicationId())
           .userId(applicationDto.getUserId())
-          .projectId(applicationDto.getProjectId())
           .department(applicationDto.getDepartment().toString())
           .title(applicationDto.getTitle())
           .promotion(applicationDto.getPromotion())

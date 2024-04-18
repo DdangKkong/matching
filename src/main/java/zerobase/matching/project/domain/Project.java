@@ -1,11 +1,24 @@
 package zerobase.matching.project.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
-import zerobase.matching.user.persist.entity.UserEntity;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import zerobase.matching.user.persist.entity.UserEntity;
 
 @Getter // Dto 에서 builder.get~~ 하기 위해
 @Setter // 구인 글 수정할때 project.set~~ 하기 위해
@@ -40,14 +53,17 @@ public class Project {
 
   // 작성 일시
   @Column(name = "CREATED_TIME")
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime createdTime;
 
   // 수정 일시
   @Column(name = "UPDATED_TIME")
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime updatedTime;
 
   // 삭제 일시
   @Column(name = "DELETED_TIME")
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime deletedTime;
 
   // 구인 마감 날짜
@@ -81,8 +97,8 @@ public class Project {
     // 구인 글 삭제시, 댓글을 보지 못하기에 title 제외한 요소들 초기화로 대체
     project.setContent("deleted");
     project.setProjectOnOffline(ProjectOnOffline.deleted);
-//    project.setDepartment(Department.deleted);
     project.setPlace("deleted");
+    project.setRecruitmentNum(0);
     project.setDueDate(null);
     project.setCreatedTime(null);
     project.setUpdatedTime(null);

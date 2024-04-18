@@ -20,7 +20,7 @@ import zerobase.matching.comment.service.CommentService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/comments")
+@RequestMapping("/maching/projects/comments")
 public class CommentController {
 
   private final CommentService commentService;
@@ -49,7 +49,8 @@ public class CommentController {
   // 댓글 읽기
   @GetMapping
   public ResponseEntity<ReadComment.Response> readComment(
-      @RequestParam(value = "commentId") int commentId){
+      @RequestParam(value = "commentId") int commentId
+  ){
     ReadComment.Response response = ReadComment.Response.fromEntity(
         commentService.readComment(commentId)
     );
@@ -60,7 +61,8 @@ public class CommentController {
   @PutMapping
   public ResponseEntity<UpdateComment.Response> updateComment(
       @RequestParam(value = "commentId") int commentId,
-      @RequestBody @Valid UpdateComment.Request request){
+      @RequestBody @Valid UpdateComment.Request request
+  ){
     UpdateComment.Response response = UpdateComment.Response.fromEntity(
         commentService.updateComment(commentId, request)
     );
@@ -71,9 +73,10 @@ public class CommentController {
   @DeleteMapping
   public ResponseEntity<DeleteComment.Response> deleteComment(
       @RequestParam int commentId,
-      @RequestBody @Valid DeleteComment.Request request){
+      @RequestParam int userId
+  ){
     DeleteComment.Response response = DeleteComment.Response.fromEntity(
-        commentService.deleteComment(commentId, request)
+        commentService.deleteComment(commentId, userId)
     );
     return ResponseEntity.ok(response);
   }

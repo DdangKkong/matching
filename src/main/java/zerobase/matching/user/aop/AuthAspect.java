@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import zerobase.matching.user.exception.AppException;
+import zerobase.matching.user.exception.CustomException;
 import zerobase.matching.user.exception.ErrorCode;
 import zerobase.matching.user.persist.UserRepository;
 
@@ -22,6 +22,6 @@ public class AuthAspect implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
     return this.userRepository.findByUserLoginId(userId)
-        .orElseThrow(()-> new AppException(ErrorCode.USERLOGINID_NOTFOUND));
+        .orElseThrow(()-> new CustomException(ErrorCode.USERLOGINID_NOTFOUND));
   }
 }

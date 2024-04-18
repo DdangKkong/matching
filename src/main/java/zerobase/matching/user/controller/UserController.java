@@ -4,8 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +15,7 @@ import zerobase.matching.user.service.UserService;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/maching/users")
 public class UserController {
 
   private final UserService userService;
@@ -36,14 +34,4 @@ public class UserController {
     return ResponseEntity.ok().body(token);
   }
 
-  /** 회원 탈퇴 */
-//  @DeleteMapping
-//  public ResponseEntity<String> deleteUser(@RequestBody @Valid RemoveUser request) {
-//    this.userService.removeUser(request);
-//    return ResponseEntity.ok().body("회원 탈퇴가 완료되었습니다.");
-//  }
-
-  /** 로그 아웃 */
-
-  /** 회원 정보 변경 */
 }

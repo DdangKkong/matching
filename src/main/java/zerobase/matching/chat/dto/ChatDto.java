@@ -1,6 +1,10 @@
 package zerobase.matching.chat.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import zerobase.matching.chat.type.ChatType;
 
 @Getter
@@ -15,16 +19,7 @@ public class ChatDto {
     private int senderRoomId;
     // 구독한 채팅방 (들어간 채팅방의 Id)
     private int roomId;
-    private String sender;
     private String chatContext;
     private ChatType chatType;
 
-//    public static ChatDto toDto(Chat chat){
-//        return ChatDto.builder()
-//                .userId(chat.getUser().getUserId())
-//                .chatRoomId(chat.getChatRoom().getChatroomId())
-//                .chatContext(chat.getChatContext())
-//                .chatType(chat.getChatType())
-//                .build();
-//    }
 }

@@ -4,14 +4,25 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import zerobase.matching.application.dto.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import zerobase.matching.application.dto.CreateApplication;
+import zerobase.matching.application.dto.ReadApplication;
+import zerobase.matching.application.dto.RetrieveApplication;
+import zerobase.matching.application.dto.SendApplication;
+import zerobase.matching.application.dto.UpdateApplication;
 import zerobase.matching.application.dto.paging.ApplicationPagingResponse;
 import zerobase.matching.application.service.ApplicationService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/applications")
+@RequestMapping("/maching/projects/applications")
 public class ApplicationController {
 
   private final ApplicationService applicationService;
@@ -26,7 +37,7 @@ public class ApplicationController {
   }
 
   // 신청서 제출
-  @PutMapping("/projects")
+  @PutMapping("/submit")
   public ResponseEntity<SendApplication.Response> sendApplication(
       @RequestParam int projectId,
       @RequestBody @Valid SendApplication.Request request) {
@@ -37,7 +48,7 @@ public class ApplicationController {
   }
 
   // 신청서 회수
-  @PutMapping("/projects/retrieve")
+  @PutMapping("/retrieve")
   public ResponseEntity<RetrieveApplication.Response> retrieveApplication(
           @RequestBody @Valid RetrieveApplication.Request request) {
     RetrieveApplication.Response response = RetrieveApplication.Response.fromEntity(
@@ -49,9 +60,11 @@ public class ApplicationController {
   // 신청서 읽기
   @GetMapping
   public ResponseEntity<ReadApplication.Response> readApplication(
-      @RequestParam int applicationId, @RequestBody @Valid ReadApplication.Request request){
+      @RequestParam int applicationId,
+      @RequestParam int userId
+  ){
     ReadApplication.Response response = ReadApplication.Response.fromEntity(
-        applicationService.readApplication(applicationId, request)
+        applicationService.readApplication(applicationId, userId)
     );
     return ResponseEntity.ok(response);
   }
@@ -71,8 +84,9 @@ public class ApplicationController {
   @DeleteMapping
   public ResponseEntity<String> deleteApplication(
       @RequestParam int applicationId,
-      @RequestBody @Valid DeleteApplication.Request request){
-        applicationService.deleteApplication(applicationId, request);
+      @RequestParam int userId
+  ){
+        applicationService.deleteApplication(applicationId, userId);
     return ResponseEntity.ok("Delete Complete");
   }
 

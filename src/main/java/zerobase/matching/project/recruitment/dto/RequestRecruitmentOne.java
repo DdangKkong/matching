@@ -1,5 +1,6 @@
 package zerobase.matching.project.recruitment.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +13,9 @@ public class RequestRecruitmentOne {
   @AllArgsConstructor
   public static class Request {
 
+    @NotNull
     private Department departmentOne;
-
+    @NotNull
     private int totalNumOne;
   }
 
