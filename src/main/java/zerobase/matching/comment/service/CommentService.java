@@ -1,5 +1,6 @@
 package zerobase.matching.comment.service;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +9,13 @@ import zerobase.matching.announcement.service.AnnouncementService;
 import zerobase.matching.comment.domain.Comment;
 import zerobase.matching.comment.dto.CommentDto;
 import zerobase.matching.comment.dto.CreateComment;
-import zerobase.matching.comment.dto.DeleteComment;
 import zerobase.matching.comment.dto.Recomment;
 import zerobase.matching.comment.dto.UpdateComment;
 import zerobase.matching.comment.repository.CommentRepository;
 import zerobase.matching.project.domain.Project;
 import zerobase.matching.project.repository.ProjectRepository;
+import zerobase.matching.user.exception.CustomException;
+import zerobase.matching.user.exception.ErrorCode;
 import zerobase.matching.user.persist.UserRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
 
@@ -69,6 +71,7 @@ public class CommentService {
   }
 
   // 댓글 수정
+  @Transactional
   public CommentDto updateComment(int commentId, UpdateComment.Request request) {
     Comment comment = getComment(commentId);
     UserEntity user = getUser(request.getUserId());
@@ -76,8 +79,7 @@ public class CommentService {
 
     // 작성자가 아닌 경우 댓글 수정 불가
     if (!Objects.equals(writerId, user.getUserId())) {
-      throw new RuntimeException(
-          user.getNickname() + "님은 해당 댓글의 작성자가 아닙니다.");
+      throw new CustomException(ErrorCode.USERID_INVALID);
     }
 
     comment.setContent(request.getContent());
@@ -88,15 +90,15 @@ public class CommentService {
   }
 
   // 댓글 삭제
-  public CommentDto deleteComment(int commentId, DeleteComment.Request request) {
+  @Transactional
+  public CommentDto deleteComment(int commentId, int userId) {
     Comment comment = getComment(commentId);
-    UserEntity user = getUser(request.getUserId());
+    UserEntity user = getUser(userId);
     int writerId = comment.getUser().getUserId();
 
     // 작성자가 아닌 경우 댓글 삭제 불가
     if (!Objects.equals(writerId, user.getUserId())) {
-      throw new RuntimeException(
-          user.getNickname() + "님은 해당 댓글의 작성자가 아닙니다.");
+      throw new CustomException(ErrorCode.USERID_INVALID);
     }
 
     comment.setContent("deleted");
@@ -107,17 +109,17 @@ public class CommentService {
 
   private UserEntity getUser(int userId) {
     return userRepository.findById(userId)
-        .orElseThrow(() -> new RuntimeException("회원 정보가 알맞지 않습니다."));
+        .orElseThrow(() -> new CustomException(ErrorCode.USERID_INVALID));
   }
 
   private Project getProject(int projectId) {
     return projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("프로젝트 구인 글의 정보가 알맞지 않습니다."));
+        .orElseThrow(() -> new CustomException(ErrorCode.PROJECTID_INVALID));
   }
 
   private Comment getComment(int commentId) {
     return commentRepository.findById(commentId)
-        .orElseThrow(() -> new RuntimeException("댓글 정보가 알맞지 않습니다"));
+        .orElseThrow(() -> new CustomException(ErrorCode.COMMENTID_INVALID));
   }
 
 }

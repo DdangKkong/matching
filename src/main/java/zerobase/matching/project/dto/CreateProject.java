@@ -1,6 +1,10 @@
 package zerobase.matching.project.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,29 +12,26 @@ import zerobase.matching.project.domain.Department;
 import zerobase.matching.project.domain.ProjectOnOffline;
 import zerobase.matching.project.recruitment.dto.RecruitmentDto;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
 public class CreateProject {
 
   @Builder
   @Getter
+//  @Schema(description = "Project create request")
   public static class Request {
 
     @NotNull
     private int userId;
 
-    @NotNull
+    @NotBlank
     private String title;
 
-    @NotNull
+    @NotBlank
     private String content;
 
     @NotNull
     private ProjectOnOffline projectOnOffline;
 
-    @NotNull
+    @NotBlank
     private String place;
 
     @NotNull

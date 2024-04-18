@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import zerobase.matching.project.domain.Project;
 import zerobase.matching.project.recruitment.domain.Recruitment;
 
@@ -35,12 +36,15 @@ public class ProjectDto {
   private String place;
 
   // 작성 일시
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime createdTime;
 
   // 수정 일시
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime updatedTime;
 
   // 삭제 일시
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime deletedTime;
 
   // 구인 마감 날짜

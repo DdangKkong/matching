@@ -4,17 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig{
 
@@ -29,12 +28,21 @@ public class SecurityConfig{
         .httpBasic(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
         // # 페이지 인증 설정
-//        .authorizeHttpRequests(requests -> requests
-//            // * 다음 페이지는 인증 필요 없음(누구나 인증 없이 접근 가능)
-//            .requestMatchers("/users/signup", "/users/signin", "/chat/message/3").permitAll()
-//            // * 나머지 페이지는 인증 필요
-////            .anyRequest().authenticated()
-//        )
+        .authorizeHttpRequests(requests -> requests
+            // * 다음 페이지는 인증 필요 없음(누구나 인증 없이 접근 가능)
+            .requestMatchers(
+                new AntPathRequestMatcher("/maching/users/signup"),
+                new AntPathRequestMatcher("/maching/users/signin"),
+                new AntPathRequestMatcher("/maching/chat/message/3"),
+                new AntPathRequestMatcher("/maching/projects/{post_id}"),
+                new AntPathRequestMatcher("/maching/projects/comments/{comment_id}"),
+                new AntPathRequestMatcher("/v3/api-docs/**"),
+                new AntPathRequestMatcher("/swagger-ui/**"),
+                new AntPathRequestMatcher("/configuration/ui")
+                ).permitAll()
+            // * 나머지 페이지는 인증 필요
+            .anyRequest().authenticated()
+        )
         // # 토큰 필터링 적용
         // (두번째 전달인자는 스프링 내장 필터)
         .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);

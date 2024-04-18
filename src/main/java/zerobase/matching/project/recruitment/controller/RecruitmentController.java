@@ -13,7 +13,7 @@ import zerobase.matching.project.recruitment.service.RecruitmentService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/projects/recruitment")
+@RequestMapping("/maching/projects/recruitment")
 public class RecruitmentController {
 
   private final RecruitmentService recruitmentService;

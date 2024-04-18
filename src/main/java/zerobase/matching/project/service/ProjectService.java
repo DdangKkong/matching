@@ -1,5 +1,7 @@
 package zerobase.matching.project.service;
 
+import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,8 @@ import zerobase.matching.project.recruitment.dto.RequestRecruitmentTwo;
 import zerobase.matching.project.recruitment.repository.RecruitmentRepository;
 import zerobase.matching.project.recruitment.service.RecruitmentService;
 import zerobase.matching.project.repository.ProjectRepository;
+import zerobase.matching.user.exception.CustomException;
+import zerobase.matching.user.exception.ErrorCode;
 import zerobase.matching.user.persist.UserRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
 
@@ -51,9 +55,9 @@ public class ProjectService {
     UserEntity user = getUser(request.getUserId());
 
     // dueDate 가 이미 지난 날짜라면 에러발생
-
-
-
+    if (request.getDueDate().isAfter(LocalDate.now())) {
+      throw new CustomException(ErrorCode.PROJECT_DUE_DATE_INVALID);
+    }
 
     Project project = projectRepository.save(
             Project.builder()
@@ -120,6 +124,7 @@ public class ProjectService {
   }
 
   // 프로젝트 구인 글 수정
+  @Transactional
   public ProjectDto updateProject(UpdateProject.Request request) {
     UserEntity user = getUser(request.getUserId());
     Project project = getProject(request.getProjectId());
@@ -128,8 +133,12 @@ public class ProjectService {
 
     // 작성자가 아닌 경우 구인 글 수정 불가
     if (!Objects.equals(writerId, request.getUserId())) {
-      throw new RuntimeException(
-          user.getNickname() + "님은 해당 구인 글의 작성자가 아닙니다.");
+      throw new CustomException(ErrorCode.USERID_INVALID);
+    }
+
+    // dueDate 가 이미 지난 날짜라면 에러발생
+    if (request.getDueDate().isAfter(LocalDate.now())) {
+      throw new CustomException(ErrorCode.PROJECT_DUE_DATE_INVALID);
     }
 
     // 모임 현황 갯수 기준으로 수정
@@ -151,6 +160,7 @@ public class ProjectService {
   }
 
   // 프로젝트 구인 글 삭제
+  @Transactional
   public ProjectDto deleteProject(int userId, int projectId) {
     UserEntity user = getUser(userId);
     Project project = getProject(projectId);
@@ -158,24 +168,22 @@ public class ProjectService {
 
     // 작성자가 아닌 경우 구인 글 수정 불가
     if (!Objects.equals(writerId, userId)) {
-      throw new RuntimeException(
-          user.getNickname() +
-          "님은 해당 구인 글의 작성자가 아닙니다.");
+      throw new CustomException(ErrorCode.USERID_INVALID);
     }
 
     // 모집 현황 삭제
-    List<MappingProjectRecruit> List = mappingRepository.findAllByProjectProjectId(projectId);
+    List<MappingProjectRecruit> list = mappingRepository.findAllByProjectProjectId(projectId);
 
       // 모집 현황 리스트 불러옴
-    List<Recruitment> recruitmentList = getRecruitmentList(project, List);
+    List<Recruitment> recruitmentList = getRecruitmentList(project, list);
     int recruitmentNum = project.getRecruitmentNum();
     List<Recruitment> deleteRecruitmentList = new ArrayList<>();
     if (recruitmentNum == 1) {
-      deleteRecruitmentList = recruitmentService.DeleteRecruitmentOne(recruitmentList, List);
+      deleteRecruitmentList = recruitmentService.DeleteRecruitmentOne(recruitmentList, list);
     } else if (recruitmentNum == 2) {
-      deleteRecruitmentList = recruitmentService.DeleteRecruitmentTwo(recruitmentList, List);
+      deleteRecruitmentList = recruitmentService.DeleteRecruitmentTwo(recruitmentList, list);
     } else if (recruitmentNum == 3) {
-      deleteRecruitmentList = recruitmentService.DeleteRecruitmentThr(recruitmentList, List);
+      deleteRecruitmentList = recruitmentService.DeleteRecruitmentThr(recruitmentList, list);
     }
 
     Project deletedProject = Project.deleteEntity(project);
@@ -202,23 +210,23 @@ public class ProjectService {
         .build();
   }
 
-  private List<Recruitment> getRecruitmentList(Project project, List<MappingProjectRecruit> List) {
+  private List<Recruitment> getRecruitmentList(Project project, List<MappingProjectRecruit> list) {
     List<Recruitment> recruitmentList = new ArrayList<>();
     if (project.getRecruitmentNum() == 1) {
-      int recruitmentId1 = List.get(0).getRecruitment().getRecruitmentId();
+      int recruitmentId1 = list.get(0).getRecruitment().getRecruitmentId();
       Recruitment recruitment1 = getRecruitment(recruitmentId1);
       recruitmentList.add(recruitment1);
     } else if (project.getRecruitmentNum() == 2) {
-      int recruitmentId1 = List.get(0).getRecruitment().getRecruitmentId();
-      int recruitmentId2 = List.get(1).getRecruitment().getRecruitmentId();
+      int recruitmentId1 = list.get(0).getRecruitment().getRecruitmentId();
+      int recruitmentId2 = list.get(1).getRecruitment().getRecruitmentId();
       Recruitment recruitment1 = getRecruitment(recruitmentId1);
       Recruitment recruitment2 = getRecruitment(recruitmentId2);
       recruitmentList.add(recruitment1);
       recruitmentList.add(recruitment2);
     } else if (project.getRecruitmentNum() == 3) {
-      int recruitmentId1 = List.get(0).getRecruitment().getRecruitmentId();
-      int recruitmentId2 = List.get(1).getRecruitment().getRecruitmentId();
-      int recruitmentId3 = List.get(2).getRecruitment().getRecruitmentId();
+      int recruitmentId1 = list.get(0).getRecruitment().getRecruitmentId();
+      int recruitmentId2 = list.get(1).getRecruitment().getRecruitmentId();
+      int recruitmentId3 = list.get(2).getRecruitment().getRecruitmentId();
       Recruitment recruitment1 = getRecruitment(recruitmentId1);
       Recruitment recruitment2 = getRecruitment(recruitmentId2);
       Recruitment recruitment3 = getRecruitment(recruitmentId3);
@@ -232,17 +240,17 @@ public class ProjectService {
 
   private UserEntity getUser(int userId) {
     return userRepository.findById(userId)
-        .orElseThrow(() -> new RuntimeException("회원 권한이 없습니다."));
+        .orElseThrow(() -> new CustomException(ErrorCode.USERID_INVALID));
   }
 
   private Project getProject(int projectId) {
     return projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("프로젝트 구인 글이 없습니다."));
+        .orElseThrow(() -> new CustomException(ErrorCode.PROJECTID_INVALID));
   }
 
   private Recruitment getRecruitment(int recruitmentId) {
     return recruitmentRepository.findById(recruitmentId)
-            .orElseThrow(() -> new RuntimeException("모집 현황이 없습니다."));
+            .orElseThrow(() -> new CustomException(ErrorCode.RECRUITMENTID_INVALID));
   }
 
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 /** 사용자 지정 예외처리 */
 @AllArgsConstructor
 @Getter
-public class AppException extends RuntimeException{
+public class CustomException extends RuntimeException{
 
   private ErrorCode errorCode;
 }

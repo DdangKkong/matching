@@ -12,7 +12,7 @@ import zerobase.matching.security.JwtUtil;
 import zerobase.matching.user.aop.AuthAspect;
 import zerobase.matching.user.dto.SignIn.Request;
 import zerobase.matching.user.dto.SignUp;
-import zerobase.matching.user.exception.AppException;
+import zerobase.matching.user.exception.CustomException;
 import zerobase.matching.user.exception.ErrorCode;
 import zerobase.matching.user.persist.UserRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
@@ -39,19 +39,19 @@ public class UserService {
     // # case 1. 사용 불가능한 아이디인지 확인
     userRepository.findByUserLoginId(request.getUserLoginId())
         .ifPresent(e -> {
-          throw new AppException(ErrorCode.USERLOGINID_DUPLICATED);
+          throw new CustomException(ErrorCode.USERLOGINID_DUPLICATED);
         });
 
     // # case 2. 사용 불가능한 이메일인지 확인
     userRepository.findByEmail(request.getEmail())
         .ifPresent(e -> {
-          throw new AppException(ErrorCode.EMAIL_DUPLICATED);
+          throw new CustomException(ErrorCode.EMAIL_DUPLICATED);
         });
 
     // # case 3. 사용 불가능한 닉네임인지 확인
     userRepository.findByNickname(request.getNickname())
         .ifPresent(e -> {
-          throw new AppException(ErrorCode.NICKNAME_DUPLICATED);
+          throw new CustomException(ErrorCode.NICKNAME_DUPLICATED);
         });
 
     // # case 4. 비밀번호 검증1
@@ -65,15 +65,15 @@ public class UserService {
     // 검증
     if(!pwPatMatcher.matches()){
       if(!pwPatLenMatcher.matches()){
-        throw new AppException(ErrorCode.PASSWORD_NOT_ALLOW_LENGTH);
+        throw new CustomException(ErrorCode.PASSWORD_NOT_ALLOW_LENGTH);
       } else {
-        throw new AppException(ErrorCode.PASSWORD_NOT_ALLOW_STRING);
+        throw new CustomException(ErrorCode.PASSWORD_NOT_ALLOW_STRING);
       }
     }
 
     // # case 5. 비밀번호 검증2 (최초 입력 비밀번호와 재입력한 비밀번호가 동일한지 검증)
     if(!request.getPassword().equals(request.getPasswordCheck())){
-      throw new AppException(ErrorCode.PASSWORD_NOT_CHECK);
+      throw new CustomException(ErrorCode.PASSWORD_NOT_CHECK);
     }
 
     // # 패스워드 암호화
@@ -111,19 +111,13 @@ public class UserService {
     // 존재하지 않으면 예외처리를 한다.
     UserEntity selectedUser = (UserEntity) authAspect.loadUserByUsername(inputUserId);
 
-    // # case 2. 이미 탈퇴된 회원임
-    // 탈퇴를 하여 더이상 사용할 수 없는 아이디로 로그인할 경우 예외 처리를 한다.
-    if(!selectedUser.isEnabled()){
-      throw new AppException(ErrorCode.USERLOGINID_INVALID);
-    }
-
-    // # case 3. password 틀림
+    // # case 2. password 틀림
     // userId가 DB에 존재해서 selectedMember가 정상적으로 리턴되었을 경우,
     // 사용자가 입력한 패스워드(inputPassword)가 DB에 저장된 패스워드와 일치하는지 비교한다.
     // 일치하지 않으면 예외처리를 한다.
     // (DB의 패스워드는 암호화되어 저장되어있기 때문에 passwordEncoder 객체의 매서드 matches를 이용해야한다.)
     if(!passwordEncoder.matches(inputPassword, selectedUser.getPassword())) {
-      throw new AppException(ErrorCode.PASSWORD_INVALID);
+      throw new CustomException(ErrorCode.PASSWORD_INVALID);
     }
 
     // # accessToken 생성
@@ -134,8 +128,7 @@ public class UserService {
   }
 
   public UserEntity findUser(int userId){
-    return userRepository.findByUserId(userId).orElseThrow(
-            ()-> new RuntimeException("NoUser")
-    );
+    return userRepository.findByUserId(userId)
+        .orElseThrow(()-> new CustomException(ErrorCode.USERID_INVALID));
   }
 }

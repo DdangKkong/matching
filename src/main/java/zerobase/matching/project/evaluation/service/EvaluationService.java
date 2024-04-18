@@ -1,25 +1,28 @@
 package zerobase.matching.project.evaluation.service;
 
+import jakarta.transaction.Transactional;
+import java.util.DoubleSummaryStatistics;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import zerobase.matching.project.domain.Project;
 import zerobase.matching.project.evaluation.domain.Evaluation;
-import zerobase.matching.project.evaluation.dto.*;
+import zerobase.matching.project.evaluation.dto.CreateEvaluation;
+import zerobase.matching.project.evaluation.dto.EvaluationDto;
+import zerobase.matching.project.evaluation.dto.UpdateEvaluation;
 import zerobase.matching.project.evaluation.dto.paging.EvaluationPagingResponse;
 import zerobase.matching.project.evaluation.dto.paging.EvaluationPagingResponseAboutMe;
 import zerobase.matching.project.evaluation.dto.paging.EvaluationResponseAboutMeDto;
 import zerobase.matching.project.evaluation.dto.paging.EvaluationResponseDto;
 import zerobase.matching.project.evaluation.repository.EvaluationRepository;
+import zerobase.matching.user.exception.CustomException;
+import zerobase.matching.user.exception.ErrorCode;
 import zerobase.matching.user.persist.UserRepository;
 import zerobase.matching.user.persist.entity.UserEntity;
-
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -47,24 +50,25 @@ public class EvaluationService {
     }
 
     // 평가 읽기
-    public EvaluationDto readEvaluation(int evaluationId, ReadEvaluation.Request request) {
+    public EvaluationDto readEvaluation(int evaluationId, int userId) {
         Evaluation evaluation = getEvaluation(evaluationId);
 
         // 작성자인지 확인
-        if (request.getUserId() != evaluation.getUser().getUserId()) {
-            throw new RuntimeException("조회 권한이 없는 회원입니다");
+        if (userId != evaluation.getUser().getUserId()) {
+            throw new CustomException(ErrorCode.USERID_INVALID);
         }
 
         return EvaluationDto.fromEntity(evaluation);
     }
 
     // 평가 수정하기
+    @Transactional
     public EvaluationDto updateEvaluation(int evaluationId, UpdateEvaluation.Request request) {
         Evaluation evaluation = getEvaluation(evaluationId);
 
         // 작성자인지 확인
         if (request.getUserId() != evaluation.getUser().getUserId()) {
-            throw new RuntimeException("수정 권한이 없는 회원입니다");
+            throw new CustomException(ErrorCode.USERID_INVALID);
         }
 
         evaluation.setScore(request.getScore());
@@ -74,12 +78,13 @@ public class EvaluationService {
     }
 
     // 평가 삭제하기
-    public void deleteEvaluation(int evaluationId, DeleteEvaluation.Request request) {
+    @Transactional
+    public void deleteEvaluation(int evaluationId, int userId) {
         Evaluation evaluation = getEvaluation(evaluationId);
 
         // 작성자인지 확인
-        if (request.getUserId() != evaluation.getUser().getUserId()) {
-            throw new RuntimeException("삭제 권한이 없는 회원입니다");
+        if (userId != evaluation.getUser().getUserId()) {
+            throw new CustomException(ErrorCode.USERID_INVALID);
         }
 
         evaluationRepository.delete(evaluation);
@@ -117,7 +122,7 @@ public class EvaluationService {
 
         // 요청한 회원이 평가 받은 회원인지 확인
         if (evaluatedUserId != evaluation.getEvaluatedUserId()) {
-            throw new RuntimeException("회원 정보가 일치하지 않아 조회가 불가능합니다");
+            throw new CustomException(ErrorCode.EVALUATEDUSER_INVALID);
         }
 
         return EvaluationDto.fromEntity(evaluation);
@@ -157,12 +162,12 @@ public class EvaluationService {
 
     private Evaluation getEvaluation(int evaluationId) {
         return evaluationRepository.findById(evaluationId)
-                .orElseThrow(() -> new RuntimeException("회원정보를 칮지 못했습니다"));
+                .orElseThrow(() -> new CustomException(ErrorCode.EVALUATION_INVALID));
     }
 
     private UserEntity getUser(int userId) {
         return userRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("회원정보를 칮지 못했습니다"));
+                .orElseThrow(() -> new CustomException(ErrorCode.USERID_INVALID));
     }
 
 }
